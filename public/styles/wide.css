@@ -65,7 +65,7 @@ header  {
     flex-direction:     row;
     color:              white;
     padding:            30px;
-    padding-top:        30px;
+    padding-top:        23px;
     /* padding-top:        30px; */
     /* padding-bottom:     30px; */
 }
@@ -94,6 +94,7 @@ nav {
 .nav-wrapper h1 a  {
     color:              white;
     text-decoration:    none;
+    padding:            7px;
 }
 
 nav a   {
@@ -173,6 +174,44 @@ p {
 
 .coloured-body a, .coloured-body b  {
     color:              inherit;
+}
+
+.coloured-body a:focus,
+.coloured-body a:hover   {
+    outline:            3px solid rgb(47, 154, 255);
+}
+
+.coloured-body .cv-contact-info-element:hover,
+.coloured-body .cv-contact-info-element:focus  {
+    -webkit-box-shadow: -5px 5px 0px 0px rgb(47, 154, 255);
+    -moz-box-shadow:    -5px 5px 0px 0px rgb(47, 154, 255);
+    box-shadow:         -5px 5px 0px 0px rgb(47, 154, 255);
+}
+
+.wide-image-cont   {
+    width:              90%;
+    margin-left:        5%;
+    height:             100px;
+    overflow:           hidden;
+}
+
+.wide-image-cont-proj   {
+    margin:             0;
+    margin-top:         20px;
+    margin-bottom:      20px;
+    height:             100px;
+    overflow:           hidden;
+
+    display:            flex;
+    justify-content:    center;
+    align-items:        center;
+    align-content:      center;
+    /* flex-direction:     column; */
+}
+
+.wide-image {
+    width:              100%;
+    filter:             grayscale(80%);
 }
 
 .cv-contact-info-cont {
