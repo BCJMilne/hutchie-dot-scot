@@ -132,7 +132,6 @@ function processSession(req, callback)   {
         if(cookies.session == undefined)    {
             logger.info(1, "Session", "Processing new session");
             var sessionId = getNewSessionId();
-            logger.info(1, `... new id: ${sessionId}`);
             logger.info(2, "Session", `New session logged: ${sessionId}`);
             callback(false, sessionId);
         }   else    {
