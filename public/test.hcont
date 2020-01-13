@@ -1,0 +1,13 @@
+{
+    "template": "testtemplate.htemp",
+    "thumb-title": "Test Template Document",
+    "title": "Test Template Document",
+    "banner-title": "Test Template Banner",
+    "banner-copyright": "My hands by <strong><a href='/ext-rd?url=https://cazagen.me/' target='_blank'>Cameron Sharp</a></strong>",
+    "article-header": "About",
+    "article-cont": "<div class='text-box'> <p> Hi - I'm <strong>Benjamin</strong>, and this is my little corner of the Internet.</p><!-- <a href='/%F0%9F%A6%90'>🦐</a> --></div><div class='text-box-tight padlr30-960'><p>I'm a BSc. Computer Science student at <a href='/ext-rd?url=https://www.hw.ac.uk/'>Heriot-Watt University</a>, and my primary interests lay in Data Storage and Archival, as well as general Back-End work.</p><p>Oh, and my favourite colour is orange.</p></div><div class='fc-container-home' style='padding-top: 30px; padding-bottom: 30px;'><div class='fc fc-home fc-shadow'><div class='text-box flex-box'><p>Projects I've worked on for University, as well as little projects in my free time. <br><br><br></p></div><a class='fc-home-button unselectable' href='/projects'>My Projects</a></div><div class='fc fc-home fc-shadow'><div class='text-box flex-box'><p>I host a couple game servers, and their status can be found below.<br><br><br></p></div><a class='fc-home-button unselectable' href='/s-status'>Server Status</a></div><div class='fc fc-home fc-shadow'><div class='text-box flex-box'><p>I also use Twitter to scream into the abyss.<br><br><br></p> </div><a class='fc-home-button unselectable' id='twitter-button' href='/ext-rd?url=https://twitter.com/HutchieVukasin' target='_blank'> <img src='/content/Twitter_Logo_Blue.png' height='24px' style='padding-right: 5px;' alt='Twitter Logo'> @HutchieVukasin </a> </div>",
+    "article-content":  [{
+        "text-box": "<p> Hi - I'm <strong>Benjamin</strong>, and this is my little corner of the Internet. </p>",
+        "text-box-tight padlr30-960": "<p> I'm a BSc. Computer Science student at <a href='/ext-rd?url=https://www.hw.ac.uk/'>Heriot-Watt University</a>, and my primary interests lay in Data Storage and Archival, as well as general Back-End work. </p> <p>Oh, and my favourite colour is orange. </p>"
+    }]
+}

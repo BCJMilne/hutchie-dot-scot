@@ -1,0 +1,187 @@
+<div class="bg-planet" id="bg-planet"></div>
+
+<script src="/content/three.js/build/three.min.js"></script>
+<script src="/content/three.js/examples/js/renderers/SVGRenderer.js"></script>
+<script src="/content/three.js/examples/js/renderers/Projector.js"></script>
+<script src="/content/three.js/examples/js/loaders/SVGLoader.js"></script>
+
+<script type="module">
+
+    var animContainer = document.getElementById("bg-planet");
+    
+    // Scene, camera and renderer setup
+    var scene         = new THREE.Scene();
+    scene.background  = new THREE.Color( 0, 0, 0 );
+    var camera        = new THREE.PerspectiveCamera( 50, animContainer.clientWidth/animContainer.clientHeight, 0.1, 1000 );
+    
+    var renderer  = new THREE.SVGRenderer();
+    renderer.setSize( animContainer.clientWidth, animContainer.clientHeight );
+    animContainer.appendChild( renderer.domElement );
+    
+    // Line creation
+    var vertices = [];
+    var divisions = 50;
+    
+    for ( var i = 0; i <= divisions; i ++ ) {
+        var v = ( i / divisions ) * ( Math.PI * 2 );
+        var x = Math.sin( v );
+        var z = Math.cos( v );
+        vertices.push( x, 0, z );
+    }
+    
+    var geometry = new THREE.BufferGeometry();
+    geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+    
+    // Vertical planet lines
+    for ( var i = 1; i <= 20; i ++ ) {
+        var material = new THREE.LineBasicMaterial( {
+            color:      0xffa500,
+            linewidth:  2
+        } );
+        var line = new THREE.Line( geometry, material );
+        line.scale.setScalar( 1 )
+        line.rotation.z = 90 * Math.PI / 180;
+        line.rotation.y = (i * 18) * Math.PI / 180;
+        scene.add( line );
+    }
+    
+    // Median line
+    var material = new THREE.LineBasicMaterial( {
+        color:      0xffa500,
+        linewidth:  2
+    } );
+    var line = new THREE.Line( geometry, material );
+    line.scale.setScalar( 1 )
+    scene.add( line );
+    
+    var material = new THREE.LineBasicMaterial( {
+        color:      0xffa500,
+        linewidth:  2
+    } );
+    var line = new THREE.Line( geometry, material );
+    line.scale.setScalar( 0.5 )
+    line.position.y = 0.85;
+    scene.add( line );
+    
+    var material = new THREE.LineBasicMaterial( {
+        color:      0xffa500,
+        linewidth:  2
+    } );
+    var line = new THREE.Line( geometry, material );
+    line.scale.setScalar( 0.5 )
+    line.position.y = -0.85;
+    scene.add( line );
+    
+    var material = new THREE.LineBasicMaterial( {
+        color:      0xffa500,
+        linewidth:  2
+    } );
+    var line = new THREE.Line( geometry, material );
+    line.scale.setScalar( 0.79 )
+    line.position.y = 0.6;
+    scene.add( line );
+    
+    var material = new THREE.LineBasicMaterial( {
+        color:      0xffa500,
+        linewidth:  2
+    } );
+    var line = new THREE.Line( geometry, material );
+    line.scale.setScalar( 0.79 )
+    line.position.y = -0.6;
+    scene.add( line );
+    
+    var material = new THREE.LineBasicMaterial( {
+        color:      0xffa500,
+        linewidth:  2
+    } );
+    var line = new THREE.Line( geometry, material );
+    line.scale.setScalar( 0.95 )
+    line.position.y = 0.3;
+    scene.add( line );
+    
+    var material = new THREE.LineBasicMaterial( {
+        color:      0xffa500,
+        linewidth:  2
+    } );
+    var line = new THREE.Line( geometry, material );
+    line.scale.setScalar( 0.95 )
+    line.position.y = -0.3;
+    scene.add( line );
+    
+    // Orbit line
+    var material = new THREE.LineDashedMaterial( {
+        color:      0xffa500,
+        linewidth:  1,
+        dashSize:   10,
+        gapSize:    10
+    } );
+    var line = new THREE.Line( geometry, material );
+    line.scale.setScalar( 1.8 );
+    scene.add( line );
+    
+    // var mesh = new THREE.Mesh( new THREE.SphereGeometry( 0.93, 40, 30 ), new THREE.MeshBasicMaterial( { 
+    //     color: 0xffc966,
+    //     overdraw: true
+    // } ) );
+    // scene.add( mesh );
+    
+    var orbitPos = 180;
+    var orbitObject = new THREE.Mesh( new THREE.SphereGeometry( 0.04, 10, 5 ), new THREE.MeshBasicMaterial( { 
+        color: 'red',
+        wireframe: 'true'
+    } ) );
+    orbitObject.position.x = -2;
+    orbitObject.position.z = -2;
+    scene.add( orbitObject );
+    
+    camera.position.z = 2.2;
+    camera.position.x = -1.2;
+    camera.position.y = 0.3;
+    camera.rotation.x = -10 * Math.PI / 180;
+    camera.rotation.y = -10 * Math.PI / 180;
+    camera.rotation.z = -30 * Math.PI / 180;
+    
+    // Degrees to radians conversion
+    var radConv = Math.PI / 180;
+    function degreesToRad(deg) {
+        return deg * radConv;
+    }
+    
+    // Animate each frame
+    var animate = function () {
+
+        setTimeout( function()  {
+            requestAnimationFrame( animate );
+        }, 80)
+        
+        // sphere.rotation.x += 0.01;
+        line.rotation.y += 0.005;
+        
+        orbitPos = (orbitPos - 0.2) % 360;
+        var radius = 1.8;
+        
+        var x = (Math.cos(degreesToRad(orbitPos)) * radius);
+        var z = (Math.sin(degreesToRad(orbitPos)) * radius);
+        orbitObject.position.x = x;
+        orbitObject.position.z = z;
+        
+        // console.log(x, y);
+        
+        renderer.render( scene, camera );
+    };
+    
+    animate();
+    
+    window.addEventListener( 'resize', onWindowResize, false );
+    
+    // Handle window resizing
+    function onWindowResize(){
+        
+        camera.aspect = animContainer.clientWidth / animContainer.clientHeight;
+        camera.updateProjectionMatrix();
+        
+        renderer.setSize( animContainer.clientWidth, animContainer.clientHeight);
+        
+    }
+    
+</script>

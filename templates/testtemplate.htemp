@@ -1,0 +1,40 @@
+{{header.html}}
+
+<title>
+    $$thumb-title$$
+</title>
+
+</header>
+
+<div class="banner-spacer" id="banner-spacer-home">
+<div class="text-box" id="banner-text-box">
+    <span id="banner-title"><strong>Ben</strong>[jamin]</span>
+    <br>
+    $$banner-title$$
+</div>
+
+<div class="bg-copyright">$$banner-copyright$$</div>
+
+<div class="banner-corner">
+
+</div>
+
+</div>
+
+<section class="homepage">
+
+<div class="text-box">
+    <h2>$$article-header$$</h2>
+</div>
+
+$$article-cont$$
+
+</div>
+
+{{footer.html}}
+
+</section>
+
+</body>
+
+</html>

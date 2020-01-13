@@ -1,0 +1,46 @@
+[
+    {
+        "path": "/t/t450-nfc",
+        "actions": [
+            {
+                "type": "database-insert",
+                "value": "logOrigin"
+            },
+            {
+                "type": "url-redirect",
+                "value": "/pagenotfound"
+            }
+        ]
+    },
+    {
+        "path": "/t/twitter",
+        "actions": [
+            {
+                "type": "url-redirect",
+                "value": "/"
+            }
+        ]
+    },
+    {
+        "path": "/test-redirect",
+        "actions": [
+            {
+                "type": "internal-redirect",
+                "value": "/s-status"
+            }
+        ]
+    },
+    {
+        "path": "/ext-rd",
+        "actions": [
+            {
+                "type": "log-variable",
+                "value": "url"
+            },
+            {
+                "type": "external-redirect",
+                "value": "$url"
+            }
+        ]
+    }
+]

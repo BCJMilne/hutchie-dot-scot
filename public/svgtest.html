@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  {{wide/head.html}}
+  
+  <script src="/js/ace-src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script language="javascript" type="text/javascript">
+    
+    // Get HTML head element 
+    var head = document.getElementsByTagName('HEAD')[0];  
+    
+    // Create new link Element 
+    var link = document.createElement('link'); 
+    
+    // set the attributes for link element  
+    link.rel = 'stylesheet';  
+    link.type = 'text/css'; 
+    link.href = 'styles/protostyle.css';  
+    
+    // Append link element to HTML head 
+    head.appendChild(link);  
+    
+    class PriorityQueue {
+      
+      constructor() {
+        this.collection = [];
+      }
+      
+      enqueue(element)    {
+        if (this.isEmpty()) { 
+          this.collection.push(element);
+        }   else    {
+          let added = false;
+          for (let i = 1; i <= this.collection.length; i++)   {
+            if (element[1] < this.collection[i-1][1]){ 
+              this.collection.splice(i-1, 0, element);
+              added = true;
+              break;
+            }
+          }
+          if (!added) {
+            this.collection.push(element);
+          }
+        }
+      };
+      
+      dequeue()   {
+        let value = this.collection.shift();
+        return value;
+      };  
+      
+      isEmpty()   {
+        return (this.collection.length === 0) 
+      };
+      
+    }
+    
+    class Graph {
+      
+      constructor(bi)   {
+        this.bidirectional  = bi;
+        this.nodes          = [];
+        this.adjList        = [];
+        this.locList        = [];
+      };
+      
+      addNode(nNode)   {
+        this.nodes.push(nNode);
+        this.adjList[nNode] = [];
+      };
+      
+      addNodeCoord(n, x, y)  {
+        this.locList[n] = {"x": x, "y": y};
+      };
+      
+      addEdge(n1, n2, w)   {
+        this.adjList[n1].push({node:n2, weight: w, printed: false});
+        if(this.bidirectional)  {
+          this.adjList[n2].push({node:n1, weight: w, printed: false});
+        }
+      };
+      
+      setEdgePrinter(n1, n2)    {
+        for(var x in this.adjList[n1])  {
+          if(adjList[n1][x].node == n2)   {
+            adjList[n1][x].printed = "true";
+          }
+        }
+        if(this.bidirectional)  {
+          for(var x in this.adjList[n2])  {
+            if(adjList[n2][x].node == n1)   {
+              adjList[n2][x].printed = "true";
+            }
+          }
+        }
+      }
+      
+      getNodeCoord(n)  {
+        return this.locList[n];
+      };
+      
+      reset() {
+        this.nodes = [];
+        this.adjList = [];
+      };
+      
+      runDijkstra(sNode, searchedColour, interval)  {
+        
+        if(!sNode)  {
+          alert("No start node!");
+          return;
+        }   else if(!searchedColour)    {
+          alert("No path colour selected!");
+          return;
+        }   else if(!interval || interval < 1)  {
+          alert("Invalid interval!");
+          return;
+        }
+        
+        var dButton = document.getElementById("d-run-button");
+        
+        dButton.innerHTML = "Running...";
+        dButton.disabled = true;
+        
+        
+        var times = {};
+        var backtrace = {};
+        var pq = new PriorityQueue();
+        var disTable = document.getElementById("dijkstra-output-table");
+        disTable.innerHTML =   `<tr>
+          <th>Node</th>
+          <th>Distance from ${sNode}</th>
+        </tr>`;
+        
+        times[sNode] = 0;
+        
+        this.nodes.forEach(node => {
+          if (node !== sNode) {
+            times[node] = Infinity
+            disTable.innerHTML += `<tr><td>${node}</td><td id="${node}-dijkstra-val">${times[node]}</td></tr>`
+          }
+        });
+        
+        pq.enqueue([sNode, 0]);
+        
+        setTimeout(procDijkstra, interval, this.adjList, this.nodes);
+        
+        function procDijkstra(adjList, nodes) {
+          if(!pq.isEmpty())    {
+            var shortestStep = pq.dequeue();
+            var currentNode = shortestStep[0];
+            console.log(`New current node: ${currentNode}`);
+            adjList[currentNode].forEach(neighbor => {
+              
+              try {
+                document.getElementById(`${currentNode}-${neighbor.node}-line`).setAttribute("stroke", searchedColour);
+              }   catch(err)  {
+                document.getElementById(`${neighbor.node}-${currentNode}-line`).setAttribute("stroke", searchedColour);
+              }
+              
+              let weight = times[currentNode] + neighbor.weight;
+              console.log(`Checking ${neighbor.node} with weight ${weight} from ${currentNode}`);
+              if (weight < times[neighbor.node]) {
+                times[neighbor.node] = weight;
+                backtrace[neighbor.node] = currentNode;
+                pq.enqueue([neighbor.node, weight]);
+                var outputBox = document.getElementById(`${neighbor.node}-dijkstra-val`);
+                outputBox.innerHTML = weight;
+                // console.log(`New shortest path from: ${backtrace[neighbor.node]} is ${weight} to ${neighbor.node}`);
+              }
+            });
+            console.log(times);
+            setTimeout(procDijkstra, interval, adjList, nodes);
+          }   else    {
+            // let path = [tNode];
+            // let lastStep = tNode;
+            
+            // while(lastStep !== tNode) {
+              //     path.unshift(backtrace[lastStep])
+              //     lastStep = backtrace[lastStep]
+              // }
+              
+              // console.log(path);
+              console.log(backtrace);
+              
+              dButton.innerHTML = "Run Dijkstra's";
+              dButton.disabled = false;
+              
+              console.log(`Path is ${path} and weight is ${times[tNode]}`);
+            }
+          }
+        }
+      }
+      
+      var g = new Graph(true);
+      
+      function createGraph(evt)  {
+        
+        var nodeColour      = document.getElementById("nodeColourPicker").value;
+        var nodeOutline     = document.getElementById("nodeOutlinePicker").value;
+        var pathColour      = document.getElementById("pathColourPicker").value;
+        var backgroundColor = document.getElementById("bgColourPicker").value;
+        
+        var edgeTable       = document.getElementById("graph-node-t");
+        edgeTable.innerHTML = ` <tr>
+          <th>Node</th>
+        </tr>`;
+        
+        var graphBox    = document.getElementById("graph-box");
+        var graphCont   = document.getElementById("graph-container");
+        graphBox.style.backgroundColor = backgroundColor;
+        graphBox.innerHTML = "";
+        
+        // console.log(document.getElementById("input-area").innerHTML);
+        // var graph = document.getElementById("input-area").innerHTML;
+        var graph = editor.getValue();
+        // console.log(graph);
+        
+        g.reset();
+        
+        // Attempt to parse the user's JSON
+        try {
+          var graph = JSON.parse(graph);
+        }   catch(err)  {
+          alert(`${err}`);
+        }
+        
+        for(var v in graph.nodes)   {
+          g.addNode(graph.nodes[v].n);
+          g.addNodeCoord(graph.nodes[v].n, getRandom(graphCont.offsetWidth), getRandom(graphCont.offsetHeight));
+          
+          console.log(`New node: ${graph.nodes[v].n}, ${g.getNodeCoord(graph.nodes[v].n).x}, ${g.getNodeCoord(graph.nodes[v].n).y}`);
+        }
+        
+        for(var v in graph.nodes)   {
+          for(var n in graph.nodes[v].edges)  {
+            g.addEdge(graph.nodes[v].n, graph.nodes[v].edges[n].n, graph.nodes[v].edges[n].weight);
+          };
+        }
+        
+        var tmpHtml;
+        
+        // For every node
+        for(var x in g.nodes)   {
+          
+          var n1 = g.nodes[x];
+          
+          tmpHtml = `<tr>
+            <td>${n1}</td>
+          </tr>
+          <tr>
+            <td>
+              <table id="graph-edge-t">
+                <tr>
+                  <th>Edge to</th>
+                  <th>Weight</th>
+                </tr>`;
+                
+                // For every edge of the node
+                for(var y in g.adjList[n1])  {
+                  
+                  var n2      = g.adjList[n1][y];
+                  var edge    = n2.node;
+                  
+                  tmpHtml += `<tr><td>${n2.node}</td><td>${n2.weight}</td></tr>`;
+                  
+                  var x1 = g.getNodeCoord(n1).x;
+                  var y1 = g.getNodeCoord(n1).y;
+                  var x2 = g.getNodeCoord(n2.node).x;
+                  var y2 = g.getNodeCoord(n2.node).y;
+                  
+                  console.log(`Creating a edge between ${n1} (${x1}, ${y1}) and ${n2.node} (${x2}, ${y2})`);
+                  graphBox.innerHTML += `<line class="edge" node1=${n1} node2=${n2.node} x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" id="${n1}-${n2.node}-line" stroke="${pathColour}" style="stroke-width: 2;" />`;
+                  
+                  var xMid = getMidpoint(x1, x2);
+                  var yMid = getMidpoint(y1, y2);
+                  
+                  console.log(`Midpoint: (${xMid}, ${yMid}), Weight: ${n2.weight}`);
+                  graphBox.innerHTML += `<text x="${xMid}" y="${yMid}" class="small unselectable" id="${n1}-${n2.node}-weight" fill="black" style="font-size: 15px;">${n2.weight}</text>`;
+                  
+                }
+                
+                tmpHtml += `</table></td></tr>`;
+                
+                // console.log(g.nodes);
+                // console.log(g.adjList);
+                // g.runDijkstra("A", "C");
+                
+                edgeTable.innerHTML += tmpHtml;
+              }
+              
+              // Draw the nodes and labels
+              for(var x in graph.nodes)   {
+                graphBox.innerHTML += `<circle class="draggable unselectable" id="${graph.nodes[x].n}-node" cx="${g.getNodeCoord(graph.nodes[x].n).x}" cy="${g.getNodeCoord(graph.nodes[x].n).y}" r="15" fill="${nodeColour}" stroke="${nodeOutline}" stroke-width="1" style="z-index: -1;"/>
+                <text x="${g.getNodeCoord(graph.nodes[x].n).x + 2}" y="${g.getNodeCoord(graph.nodes[x].n).y - 2}" fill="black" class="small unselectable" id="${graph.nodes[x].n}-text">${graph.nodes[x].n}</text>`;
+              }
+              
+              // Call the function to make the nodes draggable
+              makeDraggable(evt);
+              
+            }
+            
+            function getMidpoint(x, y)  {
+              x = parseFloat(x);
+              y = parseFloat(y);
+              if(x > y)   {
+                return (y + ((x - y) / 2));
+              }   else    {
+                return (x + ((y - x) / 2));
+              }
+            }
+            
+            function getRandom(max)    {
+              return Math.floor(Math.random() * max) + 1; 
+            }
+            
+            function makeDraggable(evt) {
+              var svg = evt.target;
+              svg.addEventListener('pointerdown', startDrag, false);
+              svg.addEventListener('pointermove', drag, false);
+              svg.addEventListener('pointerup', endDrag, false);
+              
+              var selectedElement, nodeDragX, nodeDragY, textDragX, textDragY;
+              var reTranslate = /translate\s*\(([-\+\d\.\s,e]+)\)/gi;
+              
+              function startDrag(evt) {
+                if (evt.target.classList.contains('draggable')) {
+                  
+                  var screenMatrix = svg.getScreenCTM();
+                  selectedElement = evt.target;
+                  nodeDragX = evt.clientX / screenMatrix.a;
+                  nodeDragY = evt.clientY / screenMatrix.d;
+                  textDragX = evt.clientX / screenMatrix.a;
+                  textDragY = evt.clientY / screenMatrix.d;
+                  
+                  const bbox = selectedElement.getBBox();
+                  const center = {
+                    x: bbox.width / 2,
+                    y: bbox.height / 2
+                  };
+                  
+                  var id = selectedElement.getAttribute("id").split("-")[0];
+                  var text = document.getElementById(`${id}-text`);
+                  
+                  // console.log(id);
+                  // console.log(center);
+                  
+                  // Parse existing translate transform
+                  var transform = selectedElement.getAttribute("transform");
+                  // console.log("transform: ", transform);
+                  var tmp = transform.split(' ');
+                  var tmpLeft = tmp[0].split('(')[1];
+                  var tmpRight = tmp[1].slice(0, tmp[1].length - 1);
+                  // console.log(tmpLeft,tmpRight);
+                  
+                  var digits = [tmpLeft, tmpRight];
+                  // console.log("digits", digits);
+                  nodeDragX -= parseFloat(digits[0] || 0);
+                  nodeDragY -= parseFloat(digits[1] || 0);
+                }
+              }
+              
+              function drag(evt) {
+                if (selectedElement) {
+                  
+                  var leftOffset = document.getElementById('graph-container').offsetLeft;
+                  var topOffset = document.getElementById('graph-container').offsetTop;
+                  
+                  var screenMatrix = svg.getScreenCTM();
+                  var nodeX = evt.clientX / screenMatrix.a - nodeDragX;
+                  var nodeY = evt.clientY / screenMatrix.d - nodeDragY;
+                  var textX = evt.clientX / screenMatrix.a - textDragX;
+                  var textY = evt.clientY / screenMatrix.d - textDragY;
+                  var scrollFromTop = document.documentElement.scrollTop;
+                  
+                  var id = selectedElement.getAttribute("id").split("-")[0];
+                  var text = document.getElementById(`${id}-text`);
+                  
+                  var elements = document.getElementById("graph-box").children;
+                  
+                  // Search for paths / edges between this node and another node
+                  for(var x in elements)  {
+                    try {
+                      
+                      var node1 = elements[x].getAttribute("node1");
+                      var node2 = elements[x].getAttribute("node2");
+                      
+                      // If the element has the same node1 attribute as the target id
+                      if( node1 == id ) {
+                        elements[x].setAttribute("x1", evt.clientX / screenMatrix.a - (leftOffset));
+                        elements[x].setAttribute("y1", evt.clientY / screenMatrix.d - (topOffset) + scrollFromTop);
+                        
+                        xMid = parseFloat(getMidpoint(elements[x].getAttribute("x1"), elements[x].getAttribute("x2")));
+                        yMid = parseFloat(getMidpoint(elements[x].getAttribute("y1"), elements[x].getAttribute("y2")));
+                        
+                        document.getElementById(`${node1}-${node2}-weight`).setAttribute("x", xMid);
+                        document.getElementById(`${node1}-${node2}-weight`).setAttribute("y", yMid);
+                        
+                        // If the element has the same node2 attribute as the target id
+                      }   else if( node2 == id )  {
+                        elements[x].setAttribute("x2", evt.clientX / screenMatrix.a - (leftOffset));
+                        elements[x].setAttribute("y2", evt.clientY / screenMatrix.d - (topOffset) + scrollFromTop);
+                        
+                        xMid = parseFloat(getMidpoint(elements[x].getAttribute("x1"), elements[x].getAttribute("x2")));
+                        yMid = parseFloat(getMidpoint(elements[x].getAttribute("y1"), elements[x].getAttribute("y2")));
+                        
+                        document.getElementById(`${node1}-${node2}-weight`).setAttribute("x", xMid);
+                        document.getElementById(`${node1}-${node2}-weight`).setAttribute("y", yMid);
+                      }
+                    }   catch   {
+                      
+                    }
+                  }
+                  
+                  // Remove the existing translate and replace with the new one
+                  var transform = selectedElement.getAttributeNS(null, "transform");
+                  transform = "translate(" + nodeX  + " " + nodeY + ")";
+                  selectedElement.setAttributeNS(null, "transform", transform);
+                  
+                  // Remove the existing translate and replace with the new one
+                  transform = text.getAttributeNS(null, "transform");
+                  transform = "translate(" + nodeX  + " " + nodeY + ")";
+                  text.setAttributeNS(null, "transform", transform);
+                }
+              }
+              
+              function endDrag(evt) {
+                selectedElement = false;
+              }
+            }
+          </script>
+          
+          <title>
+            Hutchie | SVGTEST
+          </title>
+          
+        </head>
+        
+        <body>
+          
+          <header>
+            
+            {{wide/nav.html}}
+            
+          </header>
+          
+          <main>
+            
+            
+            <section class="coloured-body">
+              
+              <span class="sec-header">
+                <a name="title" href="#title">#</a>
+                <b>GRAPHS WITH SVGS</b>
+              </span>
+              
+              <p>
+                This is a small demo which can load in graphs as defined in the JSON below and render them out 
+                as draggable SVG nodes. You can also run Dijkstra's Algorithm and watch as it searches through the graph.<br><br>
+              </p>
+              <p>
+                <b>Resizing the window or changing the colours will require you to re-generate the graph.</b>
+              </p>
+              <p>
+                <br>
+                Much of the dragging logic was taken from 
+                <a href="/ext-rd?url=http://www.petercollingridge.co.uk/tutorials/svg/interactive/dragging/">this 
+                  article</a> by <a href="/ext-rd?url=http://www.petercollingridge.co.uk/">Peter Collingridge</a>, 
+                  and the Dijkstra implementation was adapted from 
+                  <a href="/ext-rd?url=https://link.medium.com/6g028T26M0">this Medium article</a> by 
+                  <a href="/ext-rd?url=https://medium.com/@adriennetjohnson">Adrienne Johnson</a>.
+                </p>  
+                
+                <p style="margin-left: 10%;">
+                  <br>
+                  To do:
+                  Add arrows to paths<br>
+                  Add routing calculations<br>
+                  Make any colour possible<br>
+                  Add panning capability
+                </p>
+                
+              </section>
+              
+              <section id="sec-alert-js">
+                
+                <div class="sec-alert">
+                  JavaScript must be enabled.
+                </div>
+                
+              </section>
+              
+              <div class="inner-hline"></div>
+              
+              <section style="padding: 0; height: 50vh;">
+                
+                <div class="graph-container" id="graph-container">
+                  
+                  <a name="graph" href="#graph"></a>
+                  
+                  <svg xmlns="http://www.w3.org/2000/svg"
+                  class="graph-box"
+                  id="graph-box"
+                  onload="setTimeout(createGraph, 500, evt)">            
+                  
+                </svg>
+                
+              </div>
+              
+            </section>
+            
+            <div class="inner-hline"></div>
+            
+            <section style="padding: 0; height: 50vh;">
+              
+              <div class="path-output-container">
+                <table id=dijkstra-output-table>
+                  
+                </table>
+              </div>
+              
+              <div class="graph-details-container">
+                
+                <table class="graph-details-t" id="graph-node-t">
+                  
+                </table>
+                
+              </div>
+              
+            </section>
+            
+            <div class="inner-hline"></div>
+            
+            <section>
+              
+              <div>
+                
+                <div class="graph-options-container" style="flex-direction: row; flex-wrap: wrap;">
+                  
+                  <span class="sec-header">
+                    <a name="alg" href="#alg">#</a>
+                    <b>PATH ALGORITHMS</b>
+                  </span>
+                  
+                  <span style="padding-top: 10px; padding-bottom: 10px; display: flex; flex-direction: column; flex-wrap: wrap;">
+                    <span style="margin-top: 10px; margin-bottom: 10px;">
+                      <b>Dijkstra's Algorithm</b>
+                    </span>
+                    
+                    <span class="unselectable" style="margin: 5px;">
+                      Starting node
+                      <input class="std-btn" style="max-width: 100px; text-align: center" id="sNodeDijkstra" placeholders="Starting node"/>
+                    </span>
+                    
+                    <span style="margin: 5px;">
+                      Interval
+                      <input type="number" class="std-btn" style="max-width: 100px; text-align: center" id="dInterval" placeholders="Interval time" value="1000"/>
+                    </span>
+                    
+                    <span class="unselectable" style="margin: 5px;">
+                      Colour of searched edge
+                      <select id="dSearchedColour" class="fc-home-button unselectable std-btn">
+                        <option value="black">Black</option>
+                        <option value="white">White</option>
+                        <option value="red">Red</option>
+                        <option value="green">Green</option>
+                        <option value="yellow">Yellow</option>
+                        <option value="blue" selected>Blue</option>
+                      </select>
+                    </span>
+                    
+                    <button class="std-btn unselectable" id="d-run-button" style="margin-top: 10px;" onclick="location.hash='#graph';g.runDijkstra(document.getElementById('sNodeDijkstra').value, document.getElementById('dSearchedColour').value, document.getElementById('dInterval').value)">
+                      Run Dijkstra's
+                    </button>
+                  </span>
+                  
+                </div>
+                
+              </section>
+              
+              <div class="inner-hline"></div>
+              
+              <section>
+                
+                <span class="sec-header">
+                  <a name="editing" href="#editing">#</a>
+                  <b>EDITING THE GRAPH</b>
+                </span>
+                
+                <div>
+                  <p>
+                    Below you'll find the JSON data which is parsed to create the graph. Feel free to edit away, the changes are client-side. If you'd like to reset it, press Ctrl + F5 to force a cache-less refresh of this page.
+                  </p>
+                </div>  
+                
+                <span class="unselectable" style="width: 100%; padding-top: 10px; padding-bottom: 10px; flex-direction: row; flex-wrap: wrap;">
+                  <span class="unselectable" style="margin-bottom: 5px;">
+                    Node Colour
+                    <select id="nodeColourPicker" class="fc-home-button unselectable std-btn">
+                      <option value="black">Black</option>
+                      <option value="white" selected>White</option>
+                      <option value="red">Red</option>
+                      <option value="green">Green</option>
+                      <option value="yellow">Yellow</option>
+                      <option value="blue">Blue</option>
+                    </select>
+                  </span>
+                  <span class="unselectable" style="margin-bottom: 5px;">
+                    Node Outline
+                    <select id="nodeOutlinePicker" class="fc-home-button unselectable std-btn">
+                      <option value="black" selected>Black</option>
+                      <option value="white">White</option>
+                      <option value="red">Red</option>
+                      <option value="green">Green</option>
+                      <option value="yellow">Yellow</option>
+                      <option value="blue">Blue</option>
+                    </select>
+                  </span>
+                  <span class="unselectable" style="margin-bottom: 5px;">
+                    Background
+                    <select id="bgColourPicker" class="fc-home-button unselectable std-btn">
+                      <option value="black">Black</option>
+                      <option value="white" selected>White</option>
+                      <option value="red">Red</option>
+                      <option value="green">Green</option>
+                      <option value="yellow">Yellow</option>
+                      <option value="blue">Blue</option>
+                    </select>
+                  </span>
+                  <span class="unselectable" style="margin-bottom: 5px;">
+                    Path
+                    <select id="pathColourPicker" class="fc-home-button unselectable std-btn">
+                      <option value="black" selected>Black</option>
+                      <option value="white">White</option>
+                      <option value="red">Red</option>
+                      <option value="green">Green</option>
+                      <option value="yellow">Yellow</option>
+                      <option value="blue">Blue</option>
+                    </select>
+                  </span>
+                  <button class="std-btn unselectable" style="margin-top: 10px;" onclick="location.hash='#graph';createGraph();">
+                    Load JSON
+                  </button>
+                </span>
+                
+                <div>
+                  <div class="input-area" id="input-area">
+                    {
+                      "bidirectional": true,
+                      "nodes": [
+                      {
+                        "n": "A",
+                        "edges": [
+                        {
+                          "n": "B",
+                          "weight": 8
+                        },
+                        {
+                          "n": "C",
+                          "weight": 10
+                        }
+                        ]
+                      },
+                      {
+                        "n": "B",
+                        "edges": [
+                        {
+                          "n": "C",
+                          "weight": 4
+                        }
+                        ]
+                      },
+                      {
+                        "n": "C",
+                        "edges": []
+                      },
+                      {
+                        "n": "D",
+                        "edges": [
+                        {
+                          "n": "A",
+                          "weight": 4
+                        }
+                        ]
+                      },
+                      {
+                        "n": "E",
+                        "edges": [
+                        {
+                          "n": "A",
+                          "weight": 4
+                        },
+                        {
+                          "n": "B",
+                          "weight": 9
+                        }
+                        ]
+                      },
+                      {
+                        "n": "F",
+                        "edges": [
+                        {
+                          "n": "A",
+                          "weight": 3
+                        },
+                        {
+                          "n": "D",
+                          "weight": 3
+                        }
+                        ]
+                      },
+                      {
+                        "n": "G",
+                        "edges": [
+                        {
+                          "n": "A",
+                          "weight": 3
+                        },
+                        {
+                          "n": "D",
+                          "weight": 3
+                        }
+                        ]
+                      },
+                      {
+                        "n": "H",
+                        "edges": [
+                        {
+                          "n": "A",
+                          "weight": 3
+                        },
+                        {
+                          "n": "D",
+                          "weight": 3
+                        }
+                        ]
+                      },
+                      {
+                        "n": "I",
+                        "edges": [
+                        {
+                          "n": "A",
+                          "weight": 3
+                        },
+                        {
+                          "n": "D",
+                          "weight": 3
+                        }
+                        ]
+                      },
+                      {
+                        "n": "J",
+                        "edges": [
+                        {
+                          "n": "A",
+                          "weight": 3
+                        },
+                        {
+                          "n": "D",
+                          "weight": 3
+                        }
+                        ]
+                      },
+                      {
+                        "n": "K",
+                        "edges": [
+                        {
+                          "n": "D",
+                          "weight": 3
+                        }
+                        ]
+                      },
+                      {
+                        "n": "L",
+                        "edges": [
+                        {
+                          "n": "H",
+                          "weight": 8
+                        }
+                        ]
+                      },
+                      {
+                        "n": "M",
+                        "edges": [
+                        {
+                          "n": "A",
+                          "weight": 3
+                        },
+                        {
+                          "n": "D",
+                          "weight": 3
+                        }
+                        ]
+                      },
+                      {
+                        "n": "N",
+                        "edges": [
+                        {
+                          "n": "A",
+                          "weight": 3
+                        },
+                        {
+                          "n": "D",
+                          "weight": 3
+                        }
+                        ]
+                      },
+                      {
+                        "n": "O",
+                        "edges": [
+                        {
+                          "n": "E",
+                          "weight": 9
+                        },
+                        {
+                          "n": "J",
+                          "weight": 3
+                        }
+                        ]
+                      },
+                      {
+                        "n": "P",
+                        "edges": [
+                        {
+                          "n": "G",
+                          "weight": 5
+                        },
+                        {
+                          "n": "D",
+                          "weight": 3
+                        }
+                        ]
+                      }
+                      ]
+                    }                            
+                  </div>
+                  
+                  <script type="text/javascript">
+                    var editor = ace.edit("input-area");
+                    editor.setTheme("ace/theme/monokai");
+                    editor.session.setMode("ace/mode/javascript");
+                    
+                    var jsalert = document.getElementById('sec-alert-js');
+                    if(jsalert.style.display !== "none") jsalert.style.display = "none";
+                  </script>
+                  
+                </div>
+                
+              </section>
+              
+            </main>
+            
+            <footer>
+              
+              {{wide/footer.html}}
+              
+            </footer>
+            
+          </body>
+          
+          </html>

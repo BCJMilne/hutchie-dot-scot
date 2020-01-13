@@ -1,0 +1,171 @@
+/* ##### SVGTEST ##### */
+
+.graph-test-container   {
+    padding-top:        0;
+    margin-top:         0;
+    width:              100%;
+    border-bottom:      solid 2px var(--col-border);
+}
+
+.graph-options-container    {
+    width:              100%;
+    height:             initial;
+    /* float:              left; */
+}
+
+.input-container    {
+    /* color:              white; */
+    width:              100%;
+    height:             70vh;
+    /* float:              left; */
+}
+
+.graph-details-container    {
+    /* color:              white; */
+    border-bottom:      solid 2px var(--col-border);
+    width:              50%;
+    height:             100%;
+    float:              left;
+    overflow-y:         scroll;
+}
+
+.graph-details-t   {
+    width:              100%;
+    border-spacing:     0;
+    /* border:             0; */
+    /* border:             solid 1px black; */
+    /* text-align:         center; */
+}
+
+.graph-details-t th, .graph-details-t td {
+    /* border:             solid 1px black; */
+    text-align:         center;
+    border:             0;
+    padding:            2px;
+}
+
+.graph-details-t th {
+    /* border-bottom:      solid 1px black; */
+    text-align:         center;
+}
+
+.graph-details-t td {
+    border-bottom:      solid 2px var(--col-border);
+    /* border-bottom:      solid 1px black; */
+}
+
+#graph-edge-t   {
+    width:              100%;
+    padding:            2px;
+    border-spacing:     0;
+    border:             0;
+    /* border:             solid 1px red; */
+    text-align:         center;
+}
+
+#graph-edge-t th, #graph-edge-t td  {
+    padding:            2px;
+    border:             0;
+    text-align:         center;
+}
+
+.input-area {
+    /* background-color:   var(--col-fg); */
+    /* color:              white; */
+    margin-top:         20px;
+    width:              100%;
+    height:             50vh;
+}
+
+.path-output-container  {
+    float:              left;
+    width:              50%;
+    height:             100%;
+    /* display:            flex;
+    justify-content:    center;
+    align-items:        center;
+    align-content:      center; */
+    border-bottom:      solid 2px var(--col-border);
+    overflow-y:         scroll;
+}
+
+#dijkstra-output-table  {
+    border-spacing:     0;
+    width:              100%;
+    border-spacing:     0;
+    /* border:             0; */
+    /* border:             solid 1px black; */
+}
+
+#dijkstra-output-table td, #dijkstra-output-table th   {
+    padding:            2px;
+    border:             0;
+    text-align:         center;
+}
+
+#dijkstra-output-table th   {
+    padding:            2px;
+    border-bottom:      solid 2px var(--col-border);
+}
+
+.graph-container    {
+    width:              100%;
+    height:             50vh;
+    /* height:             100%; */
+}
+
+/* @media screen and (min-width: 900px)	{
+    .graph-test-container   {
+        height:             70vh;
+        width:              100%;
+    }
+
+    .graph-container    {
+        width:              100%;
+    }
+
+    .graph-options-container    {
+        height:             20%;
+    }
+
+    .path-output-container  {
+        width:              15%;
+        height:             100%;
+    }
+
+    .graph-details-container    {
+        color:              white;
+        width:              25%;
+        height:             100%;
+        float:              left;
+    }
+}*/
+
+.graph-box  {
+    width:          100%;
+    height:         100%;
+}
+
+.static {
+    fill:           #888;
+    cursor:         not-allowed;
+}
+
+.draggable {
+    /* fill:           #007bff; */
+    cursor:         move;
+}
+
+.draggable:hover {
+    stroke:         red;
+}
+
+.graph-box text {
+    font-family:    Arial;
+    font-size:      10px;
+    color:          black;
+}
+
+.edge   {
+    z-index:        -1;
+}

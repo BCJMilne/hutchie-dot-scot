@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  {{wide/head.html}}
+  
+  <title>
+    Hutchie | Stats
+  </title>
+  
+</head>
+
+<body>
+  
+  <header>
+    
+    {{wide/nav.html}}
+    
+  </header>
+  
+  <main>
+    
+    <section>
+      
+      <span class="sec-header">
+        <a name="historicaldata" href="#historicaldata">#</a>
+        <b>Historical Data</b>
+      </span>
+      
+      <table class="cv-info-table">
+        <tr><th>Total Days Serving</th>     <td id="days-serving-td">   Loading... </td></tr>
+        <tr><th>Total Requests Served</th>  <td id="requests-count-td"> Loading... </td></tr>
+        <tr><th>Total Sessions Created</th> <td id="sessions-count-td"> Loading... </td></tr>
+        <tr><th>Avg. Requests Per Day</th>  <td id="avg-requests-td">   Loading... </td></tr>
+        <tr><th>Avg. Sessions Per Day</th>  <td id="avg-sessions-td">   Loading... </td></tr>
+      </table>
+      
+    </section>
+    
+    <div class="inner-hline"></div>
+    
+    <section>
+      
+      <span class="sec-header">
+        <a name="agentdata" href="#agentdata">#</a>
+        <b>Agent Data</b>
+      </span>
+      
+      <p>
+        Below is a table of requests organised by agent type.
+      </p>
+      
+      <table class="cv-info-table light-shadow" id="agent-data-table">
+        <tr><th> Loading... </th><td> </td></tr>
+      </table>
+      
+    </section>
+    
+  </main>
+  
+  <footer>
+    
+    <script>
+      
+      function getData()  {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            var data = JSON.parse(this.responseText);
+            console.log(data);
+            document.getElementById("days-serving-td").innerHTML    = data['days'];
+            document.getElementById("requests-count-td").innerHTML  = data['requests-count'];
+            document.getElementById("sessions-count-td").innerHTML  = data['sessions-count'];
+            document.getElementById("avg-requests-td").innerHTML    = data['avg-requests'];
+            document.getElementById("avg-sessions-td").innerHTML    = data['avg-sessions'];
+            
+            agentTable = document.getElementById("agent-data-table");
+            agentTable.innerHTML = "";
+            
+            agents = JSON.parse(data['agents']);
+            
+            var tempHTML = "";
+            for(var agent in agents)    {
+              tempHTML += `<tr><th>${agents[agent]}</th><td>${agent}</td></tr>`
+            }
+            agentTable.innerHTML = tempHTML;
+          }
+        }
+        xhttp.open("GET", "https://hutchie.scot/api/stats/all", true);
+        xhttp.send();
+      }
+      
+      document.addEventListener('DOMContentLoaded', function () {
+        getData();
+      }, false);
+      
+    </script>
+    
+    {{wide/footer.html}}
+    
+  </footer>
+  
+</body>
+
+</html>
+

@@ -1,0 +1,61 @@
+    
+<html>
+    <head>
+
+        <!-- set encoding -->
+        <meta charset="utf-8"/>
+
+		<!-- take control of viewport -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- import main stylesheet -->
+		<link rel="stylesheet" href="styles/style_main.css"/>
+
+		<!-- import favicon -->
+		<link rel="icon" type="image/png" href="https://hutchie.scot/content/favicon/favicon-x96.ico" sizes="96x96">
+		<link rel="icon" type="image/png" href="https://hutchie.scot/content/favicon/favicon-x32.ico" sizes="32x32">
+		<link rel="icon" type="image/png" href="https://hutchie.scot/content/favicon/favicon-x16.ico" sizes="16x16">
+
+    </head>
+    
+    <body><div style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 3em;">🦐</div></body>
+
+    <script>
+        // Some code adapted from https://codepen.io/SimonJaspers/pen/XmozYK
+
+        var useCharacterAsCursor = (function() {
+            var size = 24, canvas, context;
+        
+            // Initialize canvas
+            canvas = document.createElement("canvas");
+            canvas.width    = size;
+            canvas.height   = size;
+        
+            // Store context & set styling
+            context = canvas.getContext("2d");
+            context.font            = size + "px sans-serif";
+            context.textBaseline    = "middle";
+            context.textAlign       = "center";
+        
+            return function() {
+                character = "🦐";
+                // Clear previously drawn stuff (context is reused)
+                context.clearRect(0, 0, canvas.width, canvas.height);
+        
+                context.fillText(character, size / 2, size / 2);
+                var imgDataURL = canvas.toDataURL();
+        
+                // Use offset to reposition the cursor 
+                // Two unit-less non-negative numbers less than 32
+                // (https://developer.mozilla.org/en-US/docs/Web/CSS/cursor)
+                // Use `auto` so the browser can still use the right cursor 
+                // for interactive elements
+                var offset = (size / 2) + " 0";
+                document.body.style.cursor = "url(" + imgDataURL + ") " + offset + ", auto";
+            };
+        }());
+
+        useCharacterAsCursor("🦐");
+
+    </script>
+</html>
