@@ -277,6 +277,18 @@ http.createServer(function (req, res)  {
 rl.on('line', (input) => {
     console.log(`[COM]: ${input}`);
     if(input == "logs") {
-        
+        logreader.getAgents(function(err, rows) {
+            console.log(rows);
+        })
+    }
+    if(input == "1") {
+        logreader.getEverything(function(err, rows) {
+            console.log(rows);
+        })
+    }
+    if(input == "2") {
+        logreader.getLevels(function(err, rows) {
+            console.log(rows);
+        })
     }
 });

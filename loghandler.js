@@ -74,7 +74,7 @@ function getWholeDate() {
 }
 
 function getUnixDate() {
-  return new Date().valueOf;
+  return new Date().valueOf();
 }
 
 class logger {
@@ -100,6 +100,61 @@ class logger {
     };
 
     this.logConfigChange(msg);
+  }
+
+  procAgent(agent) {
+    if (!agent) {
+      return null;
+    }
+
+    var bFirefox = new RegExp(/Firefox\//);
+    var bSeamonkey = new RegExp(/Seamonkey\//);
+    var bChrome = new RegExp(/Chrome\//);
+    var bChromium = new RegExp(/Chromium\//);
+    var bSafari = new RegExp(/Safari\//);
+    var bOPR = new RegExp(/OPR\//);
+    var bOpera = new RegExp(/Opera\//);
+    var bIE = new RegExp(/; MSIE /);
+    var bBot = new RegExp(/bot/i);
+    var bValidation = new RegExp(/validation server/);
+    var bPython = new RegExp(/python-requests/);
+    var bPythonUrllib = new RegExp(/Python-urllib/i);
+    var bCurl = new RegExp(/curl\//);
+    var detected = "";
+
+    // As defined by https://developer.mozilla.org/en-US/docs/Web/HTTP/Browser_detection_using_the_user_agent
+
+    if (bFirefox.test(agent) && !bSeamonkey.test(agent)) {
+      detected = "Firefox";
+    } else if (bSeamonkey.test(agent)) {
+      detected = "Seamonkey";
+    } else if (bChrome.test(agent) && !bChromium.test(agent)) {
+      detected = "Chrome";
+    } else if (bChromium.test(agent)) {
+      detected = "Chromium";
+    } else if (
+      bSafari.test(agent) &&
+      !(bChrome.test(agent) && !bChromium.test(agent))
+    ) {
+      detected = "Safari";
+    } else if (bOpera.test(agent) || bOPR.test(agent)) {
+      detected = "Opera";
+    } else if (bIE.test(agent)) {
+      detected = "Internet Explorer";
+    } else if (bBot.test(agent)) {
+      detected = "Bot";
+    } else if (bValidation.test(agent)) {
+      detected = "Validation Server";
+    } else if (bPython.test(agent) || bPythonUrllib.test(agent)) {
+      detected = "Python";
+    } else if (bCurl.test(agent)) {
+      detected = "Curl";
+    } else {
+      detected = "Unknown";
+      // console.log(agent);
+    }
+
+    return detected;
   }
 
   writeToConsole(log) {
@@ -129,7 +184,20 @@ class logger {
       }
     );
 
-    var q = `INSERT INTO log (log_source, log_time, log_level, log_type, log_msg_short, log_route, log_id, log_request) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    var q = `INSERT INTO log (log_source, log_time, log_level, log_type, log_msg_short, log_route, log_ip, log_session, log_agent, log_request) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    log = JSON.parse(log);
+
+    var agent,
+      session = null;
+
+    try {
+      agent = this.procAgent(log["req"]["headers"]["user-agent"]);
+      session = log["req"]["session"];
+    } catch (e) {
+      agent = null;
+      session = null;
+    }
 
     db.run(
       q,
@@ -141,7 +209,9 @@ class logger {
         log["msg"],
         log["route"],
         log["ip"],
-        log["req"]
+        session,
+        agent,
+        JSON.stringify(log["req"])
       ],
       function(err) {
         if (err) {

@@ -8,6 +8,11 @@
 -- CREATE DATABASE IF NOT EXISTS hutchie_dot_scot_db;
 -- USE hutchie_dot_scot_db;
 
+CREATE TABLE log_level (
+    log_level_id                INTEGER PRIMARY KEY,
+    log_level_name              TEXT
+);
+
 CREATE TABLE log (
     log_id              INTEGER PRIMARY KEY AUTOINCREMENT,
     log_source          TEXT,
@@ -17,13 +22,10 @@ CREATE TABLE log (
     log_msg_short       TEXT,
     log_route           TEXT,
     log_ip              TEXT,
+    log_session         TEXT,
+    log_agent           TEXT,
     log_request         TEXT,
-    FOREIGN KEY (log_id) REFERENCES log_level(log_level_id)
-);
-
-CREATE TABLE log_level (
-    log_level_id                INTEGER PRIMARY KEY,
-    log_level_name              TEXT
+    FOREIGN KEY (log_level) REFERENCES log_level(log_level_id)
 );
 
 INSERT INTO log_level (log_level_id, log_level_name) VALUES (1, "Info");
