@@ -16,8 +16,11 @@ class logreader    {
         this.pageSources    = {};
         this.agents         = {};
         this.rawAgents      = {};
+
+        this.pages          = {};
+        this.failedPages    = {};
+
         this.refreshTimer   = setInterval(this.refreshData.bind(this), 300000);
-        
         this.agentBrowser   = {};
         
         this.refreshData();
@@ -78,6 +81,9 @@ class logreader    {
         this.rawAgents      = {};
         this.agentBrowser   = {};
 
+        this.pages          = {};
+        this.failedPages    = {};
+
         logger.info(2, "Analytics", "Refreshing data from logs");
 
         fs.readdirSync(__dirname + "/logs/").forEach(file => {
@@ -130,6 +136,29 @@ class logreader    {
                                 }
 
                                 this.procAgents(log.req.headers['user-agent']);
+
+                                if(log.msg == "New request")    {
+
+                                    if( this.pages[log.route] ) {
+                                        this.pages[log.route]++;
+                                    }   else    {
+                                        this.pages[log.route] = 1;
+                                    }
+
+                                }
+
+                            }   else if( log.type == "Serving" )    {
+
+                                if( log.msg.startsWith("Unknown file") )    {
+
+                                    if( this.failedPages[log.route] ) {
+                                        this.failedPages[log.route]++;
+                                    }   else    {
+                                        this.failedPages[log.route] = 1;
+                                    }
+
+                                }
+
                             }
                         
                         }
@@ -233,6 +262,14 @@ class logreader    {
     
     getAgents() {
         return this.agentBrowser;
+    }
+
+    getPages() {
+        return this.pages;
+    }
+
+    getFailedPages() {
+        return this.failedPages;
     }
     
 }

@@ -1,8 +1,6 @@
 {
   "name": "hutchie-nodejs-rewrite",
-
   "version": "1.8.0",
-
   "description": "NodeJS implementation of the hutchie.scot webserver",
   "homepage": "https://github.com/BCJMilne/NodeJS-Hutchie-Webserver",
   "repository": {
@@ -15,6 +13,6 @@
   "author": "Benjamin Milne",
   "license": "ISC",
   "dependencies": {
-
+    "sqlite3": "^4.1.1"
   }
 }

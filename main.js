@@ -3,10 +3,16 @@ fs          = require('fs'),
 http        = require('http'),
 Logger      = require("./loghandler.js"),
 Logreader   = require("./logreader.js"),
-handler     = require("./handler.js");
+handler     = require("./handler.js"),
+readline    = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 if(!fs.existsSync(__dirname + "/constants.js"))    {
-    fs.copyFileSync(__dirname + "/constants.example.js", __dirname + "/constants.js", (err) => {
+    fs.copyFileSync(__dirname + "/defaults/constants.example.js", __dirname + "/constants.js", (err) => {
         if (err) throw err;
     });
 }
@@ -213,11 +219,13 @@ http.createServer(function (req, res)  {
                         case "all":
                         var json = {};
                         json['days'] = logreader.getDaysServing();
-                        json['requests-count'] = logreader.getRequestsCount();
-                        json['sessions-count'] = logreader.getSessionsCount();
-                        json['avg-sessions'] = logreader.getAverageSessions();
-                        json['avg-requests'] = logreader.getAverageRequests();
-                        json['agents'] = JSON.stringify(logreader.getAgents());
+                        json['requests-count']  = logreader.getRequestsCount();
+                        json['sessions-count']  = logreader.getSessionsCount();
+                        json['avg-sessions']    = logreader.getAverageSessions();
+                        json['avg-requests']    = logreader.getAverageRequests();
+                        json['agents']          = JSON.stringify(logreader.getAgents());
+                        // json['pages']           = JSON.stringify(logreader.getPages());
+                        // json['failed-pages']    = JSON.stringify(logreader.failedPages());
                         res.write( JSON.stringify(json) );
                         break;
                         default:
@@ -262,4 +270,8 @@ http.createServer(function (req, res)  {
     }
 }).listen(port, function() {
     logger.info(3, "Setup", `HTTP Running on port ` + port);
+});
+
+rl.on('line', (input) => {
+    console.log(`[COM]: ${input}`);
 });
