@@ -30,55 +30,144 @@
       </span>
       
       <p>
-        This is just an interface for <a href="https://larsjung.de/kjua/">Kjua</a>, a JavaScript QR code generation library.
+        This page is an interface for <a href="https://larsjung.de/kjua/">Kjua</a>, a JavaScript QR code generation library.
       </p>
-      
-    </section>
-    
-    <section style="margin-top: -50px;" class="coloured-body">
-      
-      <div class="cv-contact-info-cont">
-        
-        <div class="cv-contact-info-element">
-          <a href="mailto:hutchievuk@gmail.com" target="_blank">EMAIL<br><span class="cv-contact-info-link">hutchievuk [at] gmail.com</span></a>
-        </div>
-        
-        <div class="cv-contact-info-element">
-          <a href="/ext-rd?url=https://github.com/BCJMilne" target="_blank">GITHUB<br><span class="cv-contact-info-link">github.com/BCJMilne</span></a>
-        </div>
-        
-      </div>
       
     </section>
     
     <!-- <div class="inner-hline"></div> -->
     
+    <section id="sec-alert-js">
+                
+      <div class="sec-alert">
+        JavaScript must be enabled.
+      </div>
+      
+    </section>
+
     <section>
       
       <span class="sec-header">
-        <a name="projects" href="#projects">#</a>
-        <b>PROJECTS</b>
+        <a name="data" href="#data">#</a>
+        <b>DATA</b>
       </span>
       
+      <script src="/js/kjua-0.6.0.min.js"></script>
+
+      <script>
+        var jsalert = document.getElementById('sec-alert-js');
+        if(jsalert.style.display !== "none") jsalert.style.display = "none";
+
+        function genQr()  {
+
+          input = document.getElementById("qr-input").value;
+          background = document.getElementById("qr-input-background").value;
+
+          var qr = kjua( { text: input, back: background } );
+          document.getElementById("qr-output").innerHTML = "";
+          document.getElementById("qr-output").appendChild(qr);
+          writeURL(input, background);
+        }
+
+        function writeURL(input, background) {
+          if(background.startsWith("#")) {
+            console.log("Trimming");
+            background = background.substring(1);
+          }
+          document.getElementById("qr-output-url").value = `hutchie.scot/qr?input=${input}&background=${background}`
+        }
+
+        function copyURL()  {
+          var urlBox = document.getElementById("qr-output-url");
+          urlBox.select();
+          urlBox.setSelectionRange(0, 99999);
+          document.execCommand("copy");
+          // alert("Copied the text: " + urlBox.value);
+        }
+      </script>
+
       <p>
-        I post info about my projects over <a href="/projects">here</a>.
+        Input the content and change the background colour.
+      </p>
+
+      <p class="qr-input-cont">
+        <span class="qr-label">Content:</span><input id="qr-input" class="qr-input" type="text" oninput="genQr()"> 
+      </p>
+      <p class="qr-input-cont">
+        <span class="qr-label">Background [Hex]:</span><input id="qr-input-background" class="qr-input" type="text" oninput="genQr()"> 
+      </p>
+
+      <p style="text-align: right;">
+        <br>
+        Note: Kjua supports transparency using 8-digit hex values in the form <span class="code">#RRGGBBAA</span>.
+        <br>
+        Note²: You can also generate codes using <span class="code">input=</span> and <span class="code">background=</span> URL params like <a href="http://localhost:3344/qr?input=Sample%20text!&background=f1f1f1">so</a>.
       </p>
       
     </section>
     
-    <div class="new-page"></div>
-    
     <div class="inner-hline"></div>
     
-    <section class="cv-no-print">
+    <section>
       
       <span class="sec-header">
-        <a name="hutchie" href="#hutchie">#</a>
-        <b>WHAT IS A 'HUTCHIE'?</b>
+        <a name="output" href="#output">#</a>
+        <b>OUTPUT</b>
       </span>
       
       <p>
-        Hutchie is an online alias, just like <a href="/ext-rd?url=https://cazagen.me/" target="_blank">Cazagen</a>.
+        The QR code will be rendered below.
+      </p>
+
+      <p id="qr-output" class="qr-output">
+
+      </p>
+
+      <p class="qr-output-cont">
+        <span class="qr-output-label">URL [click to copy]:</span><input id="qr-output-url" class="qr-output-url" type="text" onclick="copyURL()" readonly> 
+      </p>
+
+      <script>
+        try {
+          var urlParams = new URLSearchParams(window.location.search);
+          input = urlParams.get('input');
+          background = urlParams.get('background');
+
+          if(input && background) {
+            background = "#"+background;
+          } else if(input)  {
+            background = '#f1f1f1';
+          } else  {
+            input = "Sample text";
+            background = '#f1f1f1';
+          }
+
+          document.getElementById("qr-input").value = input;
+          document.getElementById("qr-input-background").value = background;
+          var qr = kjua({text: input, back: background});
+          document.getElementById("qr-output").appendChild(qr);
+          writeURL(input, background);
+        } catch(e) {
+          console.log("Problem parsing URL");
+          console.log(e);
+        }
+      </script>
+
+    </section>
+
+    <div class="inner-hline"></div>
+
+    <section>
+      
+      <span class="sec-header">
+        <a name="licenses" href="#licenses">#</a>
+        <b>LICENSES</b>
+      </span>
+      
+      <p>
+        Kjua is used under an MIT license and can be found <a href="https://larsjung.de/kjua/">here</a> and on <a href="https://github.com/lrsjng/kjua">GitHub</a>.
+        <br>
+        QR Code is a registered trademark of <a href="https://www.qrcode.com/en/">DENSO WAVE INCORPORATED</a>.
       </p>
       
     </section>

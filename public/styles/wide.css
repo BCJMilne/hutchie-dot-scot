@@ -288,6 +288,55 @@ p {
     padding:            20px;
 }
 
+.qr-input-cont   {
+    display:            flex;
+    justify-content:    center;
+    align-items:        center;
+    align-content:      center;
+    flex-direction:     row;
+    margin-top:         20px;
+}
+
+.qr-label   {
+    width:              20%;
+}
+
+.qr-input   {
+    width:              80%;
+    text-align:         left;
+}
+
+.qr-output  {
+    display:            flex;
+    justify-content:    center;
+    align-items:        center;
+    align-content:      center;
+    flex-direction:     row;
+    margin-top:         20px;
+    margin-bottom:      20px;
+}
+
+.qr-output-cont  {
+    display:            flex;
+    justify-content:    center;
+    align-items:        center;
+    align-content:      center;
+    flex-direction:     row;
+}
+
+.qr-output-label   {
+    width:              20%;
+}
+
+.qr-output-url   {
+    width:              80%;
+    text-align:         left;
+}
+
+.code   {
+    font-family:        'Courier New', Courier, monospace;
+}
+
 @media screen and (max-width: 900px)    {
     .nav-wrapper    {
         flex-direction:     column;

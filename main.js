@@ -4,6 +4,7 @@ http        = require('http'),
 Logger      = require("./loghandler.js"),
 Logreader   = require("./logreader.js"),
 handler     = require("./handler.js"),
+QRCode      = require('qrcode'),
 readline    = require('readline');
 
 const rl = readline.createInterface({
@@ -228,12 +229,13 @@ http.createServer(function (req, res)  {
                         // json['failed-pages']    = JSON.stringify(logreader.failedPages());
                         res.write( JSON.stringify(json) );
                         break;
+
                         default:
                         res.write(jsonError("No query"));
                         break;
                     }
                     break;
-                    
+
                     default:
                     // res.writeHead(200, {'Content-Type': 'text/plain'});
                     res.write(jsonError("No query"));
