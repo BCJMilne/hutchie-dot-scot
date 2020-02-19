@@ -276,4 +276,7 @@ http.createServer(function (req, res)  {
 
 rl.on('line', (input) => {
     console.log(`[COM]: ${input}`);
+    if(input == "logs") {
+        
+    }
 });

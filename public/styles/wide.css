@@ -304,6 +304,8 @@ p {
 .qr-input   {
     width:              80%;
     text-align:         left;
+    margin:             10px;
+    font-size:          16px;
 }
 
 .qr-output  {
@@ -331,6 +333,8 @@ p {
 .qr-output-url   {
     width:              80%;
     text-align:         left;
+    margin:             10px;
+    font-size:          16px;
 }
 
 .code   {
@@ -389,6 +393,37 @@ p {
     
     .footer-item  {
         margin:             10px;
+        text-align:         left;
+    }
+
+    .qr-input-cont   {
+        flex-direction:     column;
+        margin-top:         20px;
+    }
+    
+    .qr-label   {
+        width:              100%;
+    }
+    
+    .qr-input   {
+        width:              100%;
+        text-align:         left;
+    }
+    
+    .qr-output  {
+        flex-direction:     row;
+    }
+    
+    .qr-output-cont  {
+        flex-direction:     column;
+    }
+
+    .qr-output-label   {
+        width:              100%;
+    }
+    
+    .qr-output-url   {
+        width:              100%;
         text-align:         left;
     }
 }
