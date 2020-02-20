@@ -146,7 +146,7 @@ class logreader {
   }
 
   getAgents(callback) {
-    var q = `SELECT COUNT(log_agent), log_agent FROM log GROUP BY log_agent`;
+    var q = `SELECT COUNT(log_agent), log_agent FROM log GROUP BY log_agent ORDER BY COUNT(log_agent) DESC`;
 
     db.all(q, function(err, rows) {
       if (err) {

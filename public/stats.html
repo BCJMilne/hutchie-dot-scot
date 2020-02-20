@@ -79,11 +79,11 @@
             agentTable = document.getElementById("agent-data-table");
             agentTable.innerHTML = "";
             
-            agents = JSON.parse(data['agents']);
+            agents = data['agents'];
             
             var tempHTML = "";
             for(var agent in agents)    {
-              tempHTML += `<tr><th>${agents[agent]}</th><td>${agent}</td></tr>`
+              tempHTML += `<tr><th>${agents[agent]["COUNT(log_agent)"]}</th><td>${agents[agent]["log_agent"]}</td></tr>`
             }
             agentTable.innerHTML = tempHTML;
           }
