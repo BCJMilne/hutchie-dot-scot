@@ -199,29 +199,31 @@ class logger {
       session = null;
     }
 
-    db.run(
-      q,
-      [
-        log["name"],
-        getUnixDate(),
-        log["level"],
-        log["type"],
-        log["msg"],
-        log["route"],
-        log["ip"],
-        session,
-        agent,
-        JSON.stringify(log["req"])
-      ],
-      function(err) {
-        if (err) {
-          console.log(
-            `[${getWholeDate()}] ! Error inserting data record into log database:`
-          );
-          console.log(`[${getWholeDate()}] ! ${err}`);
+    if (!log["config"]) {
+      db.run(
+        q,
+        [
+          log["name"],
+          getUnixDate(),
+          log["level"],
+          log["type"],
+          log["msg"],
+          log["route"],
+          log["ip"],
+          session,
+          agent,
+          JSON.stringify(log["req"])
+        ],
+        function(err) {
+          if (err) {
+            console.log(
+              `[${getWholeDate()}] ! Error inserting data record into log database:`
+            );
+            console.log(`[${getWholeDate()}] ! ${err}`);
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   setLogLevel(newLevel) {
