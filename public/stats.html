@@ -83,7 +83,7 @@
             
             var tempHTML = "";
             for(var agent in agents)    {
-              if(agents[agent]["log_agent"] !== "null") tempHTML += `<tr><th>${agents[agent]["COUNT(log_agent)"]}</th><td>${agents[agent]["log_agent"]}</td></tr>`
+              if(agents[agent]["log_agent"] != "null") tempHTML += `<tr><th>${agents[agent]["COUNT(log_agent)"]}</th><td>${agents[agent]["log_agent"]}</td></tr>`
             }
             agentTable.innerHTML = tempHTML;
           }
