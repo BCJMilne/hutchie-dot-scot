@@ -30,11 +30,11 @@
       </span>
       
       <table class="cv-info-table">
-        <tr><th>Total Days Serving</th>     <td id="days-serving-td">   Loading... </td></tr>
-        <tr><th>Total Requests Served</th>  <td id="requests-count-td"> Loading... </td></tr>
-        <tr><th>Total Sessions Created</th> <td id="sessions-count-td"> Loading... </td></tr>
-        <tr><th>Avg. Requests Per Day</th>  <td id="avg-requests-td">   Loading... </td></tr>
-        <tr><th>Avg. Sessions Per Day</th>  <td id="avg-sessions-td">   Loading... </td></tr>
+        <tr><th>Days Serving</th>       <td id="days-serving-td">   Loading... </td></tr>
+        <tr><th>Requests Served</th>    <td id="requests-count-td"> Loading... </td></tr>
+        <tr><th>Sessions Created</th>   <td id="sessions-count-td"> Loading... </td></tr>
+        <tr><th>Avg. Requests/day</th>  <td id="avg-requests-td">   Loading... </td></tr>
+        <tr><th>Avg. Ressions/day</th>  <td id="avg-sessions-td">   Loading... </td></tr>
       </table>
       
     </section>
@@ -70,11 +70,11 @@
           if (this.readyState == 4 && this.status == 200) {
             var data = JSON.parse(this.responseText);
             console.log(data);
-            document.getElementById("days-serving-td").innerHTML    = data['days'];
-            document.getElementById("requests-count-td").innerHTML  = data['requests-count'];
-            document.getElementById("sessions-count-td").innerHTML  = data['sessions-count'];
-            document.getElementById("avg-requests-td").innerHTML    = data['avg-requests'];
-            document.getElementById("avg-sessions-td").innerHTML    = data['avg-sessions'];
+            document.getElementById("days-serving-td").innerHTML    = data['days'].toFixed(1);
+            document.getElementById("requests-count-td").innerHTML  = data['requests-count'].toFixed(1);
+            document.getElementById("sessions-count-td").innerHTML  = data['sessions-count'].toFixed(1);
+            document.getElementById("avg-requests-td").innerHTML    = data['avg-requests'].toFixed(1);
+            document.getElementById("avg-sessions-td").innerHTML    = data['avg-sessions'].toFixed(1);
             
             agentTable = document.getElementById("agent-data-table");
             agentTable.innerHTML = "";
@@ -83,7 +83,7 @@
             
             var tempHTML = "";
             for(var agent in agents)    {
-              tempHTML += `<tr><th>${agents[agent]["COUNT(log_agent)"]}</th><td>${agents[agent]["log_agent"]}</td></tr>`
+              if(agents[agent]["log_agent"] !== "null") tempHTML += `<tr><th>${agents[agent]["COUNT(log_agent)"]}</th><td>${agents[agent]["log_agent"]}</td></tr>`
             }
             agentTable.innerHTML = tempHTML;
           }
