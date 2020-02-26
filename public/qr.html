@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  {{wide/head.html}}
+  
+  <title>
+    Hutchie | QR Generator
+  </title>
+  
+</head>
+
+<body>
+  
+  <header>
+    
+    {{wide/nav.html}}
+    
+  </header>
+  
+  <main>
+    
+    <section class="coloured-body">
+      
+      <span class="sec-header">
+        <a name="this-page" href="#this-page">#</a>
+        <b>THIS PAGE</b>
+      </span>
+      
+      <p>
+        This page is an interface for <a href="/ext-rd?url=https://larsjung.de/kjua/">Kjua</a>, a JavaScript QR code generation library.
+      </p>
+      
+    </section>
+    
+    <!-- <div class="inner-hline"></div> -->
+    
+    <section id="sec-alert-js">
+                
+      <div class="sec-alert">
+        JavaScript must be enabled.
+      </div>
+      
+    </section>
+
+    <section>
+      
+      <span class="sec-header">
+        <a name="data" href="#data">#</a>
+        <b>DATA</b>
+      </span>
+      
+      <script src="/js/kjua-0.6.0.min.js"></script>
+
+      <script>
+        var jsalert = document.getElementById('sec-alert-js');
+        if(jsalert.style.display !== "none") jsalert.style.display = "none";
+
+        function genQr()  {
+
+          input = document.getElementById("qr-input").value;
+          background = document.getElementById("qr-input-background").value;
+
+          var qr = kjua( { text: input, back: background } );
+          document.getElementById("qr-output").innerHTML = "";
+          document.getElementById("qr-output").appendChild(qr);
+          writeURL(input, background);
+        }
+
+        function writeURL(input, background) {
+          if(background.startsWith("#")) {
+            console.log("Trimming");
+            background = background.substring(1);
+          }
+          document.getElementById("qr-output-url").value = `hutchie.scot/qr?input=${input}&background=${background}`
+        }
+
+        function copyURL()  {
+          var urlBox = document.getElementById("qr-output-url");
+          urlBox.select();
+          urlBox.setSelectionRange(0, 99999);
+          document.execCommand("copy");
+          // alert("Copied the text: " + urlBox.value);
+        }
+      </script>
+
+      <p>
+        Input the content and change the background colour.
+      </p>
+
+      <p class="qr-input-cont">
+        <span class="qr-label">Content:</span><input id="qr-input" class="qr-input" type="text" oninput="genQr()"> 
+      </p>
+      <p class="qr-input-cont">
+        <span class="qr-label">Background [Hex]:</span><input id="qr-input-background" class="qr-input" type="text" oninput="genQr()"> 
+      </p>
+
+      <p style="text-align: right;">
+        <br>
+        Note: Kjua supports transparency using 8-digit hex values in the form <span class="code">#RRGGBBAA</span>.
+        <br>
+        Note²: You can also generate codes using <span class="code">input=</span> and <span class="code">background=</span> URL params like <a href="/qr?input=Sample text&background=f1f1f1">so</a>.
+      </p>
+      
+    </section>
+    
+    <div class="inner-hline"></div>
+    
+    <section>
+      
+      <span class="sec-header">
+        <a name="output" href="#output">#</a>
+        <b>OUTPUT</b>
+      </span>
+      
+      <p>
+        The QR code will be rendered below.
+      </p>
+
+      <p id="qr-output" class="qr-output">
+
+      </p>
+
+      <p class="qr-output-cont">
+        <span class="qr-output-label">URL [click to copy]:</span><input id="qr-output-url" class="qr-output-url" type="text" onclick="copyURL()" readonly> 
+      </p>
+
+      <script>
+        try {
+          var urlParams = new URLSearchParams(window.location.search);
+          input = urlParams.get('input');
+          background = urlParams.get('background');
+
+          if(input && background) {
+            background = "#"+background;
+          } else if(input)  {
+            background = '#f1f1f1';
+          } else  {
+            input = "Sample text";
+            background = '#f1f1f1';
+          }
+
+          document.getElementById("qr-input").value = input;
+          document.getElementById("qr-input-background").value = background;
+          var qr = kjua({text: input, back: background});
+          document.getElementById("qr-output").appendChild(qr);
+          writeURL(input, background);
+        } catch(e) {
+          console.log("Problem parsing URL");
+          console.log(e);
+        }
+      </script>
+
+    </section>
+
+    <div class="inner-hline"></div>
+
+    <section>
+      
+      <span class="sec-header">
+        <a name="licenses" href="#licenses">#</a>
+        <b>LICENSES</b>
+      </span>
+      
+      <p>
+        Kjua is used under an MIT license and can be found <a href="/ext-rd?url=https://larsjung.de/kjua/">here</a> and on <a href="/ext-rd?url=https://github.com/lrsjng/kjua">GitHub</a>.
+        <br>
+        QR Code is a registered trademark of <a href="/ext-rd?url=https://www.qrcode.com/en/">DENSO WAVE INCORPORATED</a>.
+      </p>
+      
+    </section>
+    
+  </main>
+  
+  <footer>
+    
+    {{wide/footer.html}}
+    
+  </footer>
+  
+</body>
+
+</html>
+

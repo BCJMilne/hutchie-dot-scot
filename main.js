@@ -3,10 +3,17 @@ fs          = require('fs'),
 http        = require('http'),
 Logger      = require("./loghandler.js"),
 Logreader   = require("./logreader.js"),
-handler     = require("./handler.js");
+handler     = require("./handler.js"),
+QRCode      = require('qrcode'),
+readline    = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 if(!fs.existsSync(__dirname + "/constants.js"))    {
-    fs.copyFileSync(__dirname + "/constants.example.js", __dirname + "/constants.js", (err) => {
+    fs.copyFileSync(__dirname + "/defaults/constants.example.js", __dirname + "/constants.js", (err) => {
         if (err) throw err;
     });
 }
@@ -132,7 +139,6 @@ function processSession(req, callback)   {
         if(cookies.session == undefined)    {
             logger.info(1, "Session", "Processing new session");
             var sessionId = getNewSessionId();
-            logger.info(1, `... new id: ${sessionId}`);
             logger.info(2, "Session", `New session logged: ${sessionId}`);
             callback(false, sessionId);
         }   else    {
@@ -189,50 +195,52 @@ http.createServer(function (req, res)  {
             var apiCall = req._tokens[2];
             res.writeHead(200, {'Content-Type': 'application/json'});
             
+            var manual_end = false;
+
             try {
                 switch(apiCall) {
                     case "stats":
                     switch(req._tokens[3])  {
-                        case "days-serving":
-                        res.write( `{ "days": ${logreader.getDatesServing()} }` );
-                        break;
-                        case "requests-count":
-                        res.write( `{ "requests": ${logreader.getRequestsCount()} }` );
-                        break;
-                        case "sessions-count":
-                        res.write( `{ "sessions": ${logreader.getSessionsCount()} }` );
-                        break;
-                        case "avg-sessions":
-                        res.write( `{ "sessions": ${logreader.getAverageSessions()} }` );
-                        break;
-                        case "avg-requests":
-                        res.write( `{ "requests": ${logreader.getAverageRequests()} }` );
-                        break;
-                        case "agents":
-                        res.write( JSON.stringify(logreader.getAgents()) );
-                        break;
+
                         case "all":
+                        manual_end = true;
                         var json = {};
-                        json['days'] = logreader.getDaysServing();
-                        json['requests-count'] = logreader.getRequestsCount();
-                        json['sessions-count'] = logreader.getSessionsCount();
-                        json['avg-sessions'] = logreader.getAverageSessions();
-                        json['avg-requests'] = logreader.getAverageRequests();
-                        json['agents'] = JSON.stringify(logreader.getAgents());
-                        res.write( JSON.stringify(json) );
+                        logreader.getDaysServing(function(err, val) {
+                            json['days'] = val;
+                            logreader.getRequestsCount(function(err, val)   {
+                                json['requests-count'] = val;
+                                logreader.getSessionsCount(function(err, val)   {
+                                    json['sessions-count'] = val;
+                                    logreader.getAverageSessions(function(err, val) {
+                                        json['avg-sessions'] = val;
+                                        logreader.getAverageRequests(function(err, val) {
+                                            json['avg-requests'] = val;
+                                            logreader.getAgents(function(err, rows) {
+                                                json['agents'] = rows;
+                                                res.write( JSON.stringify(json) );
+                                                res.end();
+                                            })
+                                        })
+                                    })
+                                })
+                            })
+                        })
+                        // json['pages']           = JSON.stringify(logreader.getPages());
+                        // json['failed-pages']    = JSON.stringify(logreader.failedPages());
                         break;
+
                         default:
                         res.write(jsonError("No query"));
                         break;
                     }
                     break;
-                    
+
                     default:
                     // res.writeHead(200, {'Content-Type': 'text/plain'});
                     res.write(jsonError("No query"));
                     break;
                 }
-                res.end();
+                if(!manual_end) res.end();
             }
             catch(exception)
             {
@@ -263,4 +271,63 @@ http.createServer(function (req, res)  {
     }
 }).listen(port, function() {
     logger.info(3, "Setup", `HTTP Running on port ` + port);
+});
+
+rl.on('line', (input) => {
+    console.log(`[COM]: ${input}`);
+    if(input == "logs") {
+        logreader.getAgents(function(err, rows) {
+            console.log(rows);
+        })
+    }
+    if(input == "days") {
+        logreader.getDaysServing(function(err, val)  {
+            if(!err) console.log(val);
+        });
+    }
+    if(input == "requests") {
+        logreader.getRequestsCount(function(err, val)  {
+            if(!err) console.log(val);
+        });
+    }
+    if(input == "sessionsCount") {
+        logreader.getSessionsCount(function(err, val)  {
+            if(!err) console.log(val);
+        });
+    }
+    if(input == "sessions") {
+        logreader.getSessions(function(err, rows)  {
+            if(!err) console.log(rows);
+        });
+    }
+    if(input == "averageRequests") {
+        logreader.getAverageRequests(function(err, val)  {
+            if(!err) console.log(val);
+        });
+    }
+    if(input == "averageSessions") {
+        logreader.getAverageSessions(function(err, val)  {
+            if(!err) console.log(val);
+        });
+    }
+    if(input == "agents") {
+        logreader.getAgents(function(err, rows)  {
+            if(!err) console.log(rows);
+        });
+    }
+    if(input == "routes") {
+        logreader.getRoutes(function(err, rows)  {
+            if(!err) console.log(rows);
+        });
+    }
+    if(input == "failedRoutes") {
+        logreader.getFailedRoutes(function(err, rows)  {
+            if(!err) console.log(rows);
+        });
+    }
+    if(input == "1") {
+        logreader.getEverything(function(err, rows)  {
+            if(!err) console.log(rows);
+        });
+    }
 });
