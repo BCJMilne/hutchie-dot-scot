@@ -37,13 +37,7 @@
     
     <!-- <div class="inner-hline"></div> -->
     
-    <section id="sec-alert-js">
-                
-      <div class="sec-alert">
-        JavaScript must be enabled.
-      </div>
-      
-    </section>
+    {{wide/js-alert.html}}
 
     <section>
       
@@ -55,8 +49,6 @@
       <script src="/js/kjua-0.6.0.min.js"></script>
 
       <script>
-        var jsalert = document.getElementById('sec-alert-js');
-        if(jsalert.style.display !== "none") jsalert.style.display = "none";
 
         function genQr()  {
 

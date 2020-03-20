@@ -24,6 +24,10 @@ htmlDir     = __dirname + "/public",
 incDir      = __dirname + "/includes/",
 logDir      = __dirname + "/logs";
 
+if(!fs.existsSync(logDir + "/logs.db"))    {
+    fs.closeSync(fs.openSync(logDir + "/logs.db", 'w'));
+}
+
 var argv        = process.argv.slice(2);
 
 var logLevel    = 3;

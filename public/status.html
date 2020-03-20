@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  {{wide/head.html}}
+  
+  <title>
+    Hutchie | Stats
+  </title>
+  
+</head>
+
+<body>
+  
+  <header>
+    
+    {{wide/nav.html}}
+    
+  </header>
+  
+  <main>
+    
+    <section class="coloured-body">
+      
+      <span class="sec-header">
+        <a name="serverstatus" href="#serverstatus">#</a>
+        <b>Server Status</b>
+      </span>
+
+      <p>
+        Below you'll find the current status of the whitelisted <span class="code"><a href="/ext-rd?url=https://minecraft.net">mc.hutchie.scot</a></span> Minecraft Server.
+      </p>
+      
+    </section>
+
+    {{wide/js-alert.html}}
+
+    <section>
+      
+      <span class="sec-header">
+        <a name="server" href="#server">#</a>
+        <b>Server</b>
+      </span>
+      
+      <table class="cv-info-table">
+        <tr><th>Status</th>       <td id="status-td">         Loading... </td></tr>
+        <tr><th>MOTD</th>         <td id="motd-td">           Loading... </td></tr>
+        <tr><th>Version</th>      <td id="software-td">       Loading... </td></tr>
+        <tr><th>Brand</th>        <td id="brand-td">          Loading... </td></tr>
+        <tr><th>Players</th>      <td id="players-count-td">  Loading... </td></tr>
+      </table>
+      
+    </section>
+
+    <div class="inner-hline"></div>
+
+    <section>
+      
+      <span class="sec-header">
+        <a name="current" href="#current">#</a>
+        <b>Players</b>
+      </span>
+
+      <table class="mc-players-table" id="player-data-table">
+        <tr><th>[ Player name... ]</th><td> Loading... </td></tr>
+      </table>
+
+      <table class="mc-players-table-mobile" id="player-data-table-mobile">
+        <tr><th>[ Player name... ]</th><td> Loading... </td></tr>
+      </table>
+      
+    </section>
+    
+  </main>
+  
+  <footer>
+    
+    <script>
+
+      function checkOnline(players, username) {
+        for(var player in players)  {
+          if(players[player]["player_username"] == username) return true;
+        }
+        return false;
+      }
+
+      function convertTime(units) {
+
+        // Minutes
+        var minutesTotal = units * 5;
+        var minutes = minutesTotal % 60;
+
+        // Hours
+        var hours = Math.floor( minutesTotal / 60 );
+        // console.log(`Total minutes: ${minutesTotal}, total hours: ${hours}, minutes: ${minutes}`);
+
+        return `${hours}h and ${minutes}m`;
+      }
+
+      function getData()  {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            var data = JSON.parse(this.responseText);
+            console.log(data);
+
+            if(data.status["status"] == "online") {
+
+              document.getElementById("status-td").innerHTML        = "🟢";
+              document.getElementById("motd-td").innerHTML          = data.status['status_motd'];
+              document.getElementById("software-td").innerHTML      = data.status['status_software'];
+              document.getElementById("brand-td").innerHTML         = data.status['status_brand'];
+              document.getElementById("players-count-td").innerHTML = `${data.status['status_online_players']} / ${data.status['status_max_players']}`;
+              
+
+            } else  {
+
+              document.getElementById("status-td").innerHTML        = "🔴";
+              document.getElementById("motd-td").innerHTML          = "...";
+              document.getElementById("software-td").innerHTML      = "...";
+              document.getElementById("brand-td").innerHTML         = "...";
+              document.getElementById("players-count-td").innerHTML = "...";
+
+              playerTable                 = document.getElementById("player-data-table");
+              playerTableMobile           = document.getElementById("player-data-table-mobile");
+
+            }
+
+            playerTable                 = document.getElementById("player-data-table");
+            playerTableMobile           = document.getElementById("player-data-table-mobile");
+            playerTable.innerHTML       = "";
+            playerTableMobile.innerHTML = "";
+
+            players = data.recent_players;
+            
+            var tempHTML        = "<tr><th>Online</th><th>User</th><th>Last 24 hours</th></tr>";
+            var tempHTMLMobile  = "<tr><th>Online</th><th>User</th></tr>";
+            for(var player in players)    {
+              var isOnline = "🔴";
+              if(checkOnline(data.players, players[player]["player_username"])) isOnline = "🟢";
+
+              var time = convertTime(players[player]["count"]);
+
+              tempHTML += `<tr><td class="online">${isOnline}</td><td class="name">${players[player]["player_username"]}</td><td class="play-time">${time}</td></tr>`;
+
+              tempHTMLMobile += `<tr><td class="online">${isOnline}</td><td class="name">${players[player]["player_username"]}</td></tr>`;
+              tempHTMLMobile += `<tr><td class="play-time" colspan="2">${time}</td></tr>`;
+            }
+            tempHTMLMobile += `<tr><td class="play-time" colspan="2">Total time online for the last 24 hours</td></tr>`;
+            playerTable.innerHTML       += tempHTML;
+            playerTableMobile.innerHTML += tempHTMLMobile;
+
+          }
+        }
+        xhttp.open("GET", "https://api.hutchie.scot/mc-users", true);
+        xhttp.send();
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        getData();
+      }, false);
+      
+    </script>
+    
+    {{wide/footer.html}}
+    
+  </footer>
+  
+</body>
+
+</html>
+

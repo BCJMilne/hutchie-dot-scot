@@ -282,6 +282,77 @@ p {
     text-align:         left;
 }
 
+.mc-players-table, .mc-players-table-mobile    {
+    margin-top:         30px;
+    border-collapse:    collapse;
+    width:              90%;
+    margin-left:        5%;
+    font-size:          16px;
+    border:             1px solid black;
+    border-top:         25px solid black;
+}
+
+.mc-players-table-mobile    {
+    display:    none;
+}
+
+@media screen and (max-width: 330px)    {
+    .mc-players-table   {
+        display:    none;
+    }
+
+    .mc-players-table-mobile    {
+        display:    table;
+    }
+}
+
+.mc-players-table th, .mc-players-table-mobile th    {
+    vertical-align:     top;
+    font-weight:        normal;
+    padding:            10px;
+    text-align:         center;
+    border-bottom:      1px solid black;
+}
+
+.mc-players-table .online, .mc-players-table-mobile .online    {
+    width:              10%;
+    vertical-align:     top;
+    text-align:         center;
+    font-weight:        normal;
+    padding:            10px;
+    border-right:       1px solid black;
+}
+
+.mc-players-table-mobile .online    {
+    border-bottom:      1px solid black;
+}
+
+.mc-players-table .name, .mc-players-table-mobile .name  {
+    width:              45%;
+    vertical-align:     top;
+    text-align:         center;
+    font-weight:        normal;
+    padding:            10px;
+}
+
+.mc-players-table-mobile .name  {
+    width:              90%;
+    border-bottom:      1px solid black;
+}
+
+.mc-players-table .play-time, .mc-players-table-mobile .play-time {
+    width:              45%;
+    vertical-align:     top;
+    text-align:         center;
+    font-weight:        normal;
+    padding:            10px;
+}
+
+.mc-players-table-mobile .play-time {
+    width:              100%;
+    border-bottom:      1px solid black;
+}
+
 .sec-alert  {
     outline:            2px solid red;
     background-color:   rgb(255, 195, 195);
