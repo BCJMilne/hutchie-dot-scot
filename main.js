@@ -1,10 +1,9 @@
 const url   = require('url'),
 fs          = require('fs'),
 http        = require('http'),
-Logger      = require("./loghandler.js"),
-Logreader   = require("./logreader.js"),
-handler     = require("./handler.js"),
-QRCode      = require('qrcode'),
+Logger      = require("./log_handler.js"),
+Logreader   = require("./log_reader.js"),
+req_handler = require("./req_handler.js"),
 readline    = require('readline');
 
 const rl = readline.createInterface({
@@ -25,12 +24,16 @@ htmlDir     = __dirname + "/public",
 incDir      = __dirname + "/includes/",
 logDir      = __dirname + "/logs";
 
+if(!fs.existsSync(logDir + "/logs.db"))    {
+    fs.closeSync(fs.openSync(logDir + "/logs.db", 'w'));
+}
+
 var argv        = process.argv.slice(2);
 
 var logLevel    = 3;
 
 const logger    = new Logger("Main");
-const logreader = new Logreader();
+const log_reader = new Logreader();
 
 function showHelp() {
     console.log("This will, eventually, be the help page.");
@@ -78,11 +81,11 @@ for(var x = 0; x < argv.length; x++)   {
 logger.setLogLevel(logLevel);
 logger.setLogDir(logDir);
 
-logreader.setLogLevel(logLevel);
+log_reader.setLogLevel(logLevel);
 
-handler.setHtmlDir(htmlDir);
-handler.setIncDir(incDir);
-handler.setLogLevel(logLevel);
+req_handler.setHtmlDir(htmlDir);
+req_handler.setIncDir(incDir);
+req_handler.setLogLevel(logLevel);
 
 logger.info(1, "Setup", `Variables loaded`);
 
@@ -205,17 +208,17 @@ http.createServer(function (req, res)  {
                         case "all":
                         manual_end = true;
                         var json = {};
-                        logreader.getDaysServing(function(err, val) {
+                        log_reader.getDaysServing(function(err, val) {
                             json['days'] = val;
-                            logreader.getRequestsCount(function(err, val)   {
+                            log_reader.getRequestsCount(function(err, val)   {
                                 json['requests-count'] = val;
-                                logreader.getSessionsCount(function(err, val)   {
+                                log_reader.getSessionsCount(function(err, val)   {
                                     json['sessions-count'] = val;
-                                    logreader.getAverageSessions(function(err, val) {
+                                    log_reader.getAverageSessions(function(err, val) {
                                         json['avg-sessions'] = val;
-                                        logreader.getAverageRequests(function(err, val) {
+                                        log_reader.getAverageRequests(function(err, val) {
                                             json['avg-requests'] = val;
-                                            logreader.getAgents(function(err, rows) {
+                                            log_reader.getAgents(function(err, rows) {
                                                 json['agents'] = rows;
                                                 res.write( JSON.stringify(json) );
                                                 res.end();
@@ -225,8 +228,8 @@ http.createServer(function (req, res)  {
                                 })
                             })
                         })
-                        // json['pages']           = JSON.stringify(logreader.getPages());
-                        // json['failed-pages']    = JSON.stringify(logreader.failedPages());
+                        // json['pages']           = JSON.stringify(log_reader.getPages());
+                        // json['failed-pages']    = JSON.stringify(log_reader.failedPages());
                         break;
 
                         default:
@@ -257,8 +260,8 @@ http.createServer(function (req, res)  {
         }
         else
         {
-            // Pass request to the handler
-            handler.handleStatic(req, res);
+            // Pass request to the req_handler
+            req_handler.handleStatic(req, res);
         }
     }
     catch(exception)
@@ -276,57 +279,57 @@ http.createServer(function (req, res)  {
 rl.on('line', (input) => {
     console.log(`[COM]: ${input}`);
     if(input == "logs") {
-        logreader.getAgents(function(err, rows) {
+        log_reader.getAgents(function(err, rows) {
             console.log(rows);
         })
     }
     if(input == "days") {
-        logreader.getDaysServing(function(err, val)  {
+        log_reader.getDaysServing(function(err, val)  {
             if(!err) console.log(val);
         });
     }
     if(input == "requests") {
-        logreader.getRequestsCount(function(err, val)  {
+        log_reader.getRequestsCount(function(err, val)  {
             if(!err) console.log(val);
         });
     }
     if(input == "sessionsCount") {
-        logreader.getSessionsCount(function(err, val)  {
+        log_reader.getSessionsCount(function(err, val)  {
             if(!err) console.log(val);
         });
     }
     if(input == "sessions") {
-        logreader.getSessions(function(err, rows)  {
+        log_reader.getSessions(function(err, rows)  {
             if(!err) console.log(rows);
         });
     }
     if(input == "averageRequests") {
-        logreader.getAverageRequests(function(err, val)  {
+        log_reader.getAverageRequests(function(err, val)  {
             if(!err) console.log(val);
         });
     }
     if(input == "averageSessions") {
-        logreader.getAverageSessions(function(err, val)  {
+        log_reader.getAverageSessions(function(err, val)  {
             if(!err) console.log(val);
         });
     }
     if(input == "agents") {
-        logreader.getAgents(function(err, rows)  {
+        log_reader.getAgents(function(err, rows)  {
             if(!err) console.log(rows);
         });
     }
     if(input == "routes") {
-        logreader.getRoutes(function(err, rows)  {
+        log_reader.getRoutes(function(err, rows)  {
             if(!err) console.log(rows);
         });
     }
     if(input == "failedRoutes") {
-        logreader.getFailedRoutes(function(err, rows)  {
+        log_reader.getFailedRoutes(function(err, rows)  {
             if(!err) console.log(rows);
         });
     }
     if(input == "1") {
-        logreader.getEverything(function(err, rows)  {
+        log_reader.getEverything(function(err, rows)  {
             if(!err) console.log(rows);
         });
     }

@@ -1,6 +1,6 @@
 const fs        = require("fs"),
 url           = require('url'),
-Logger        = require("./loghandler.js"),
+Logger        = require("./log_handler.js"),
 { execSync }  = require('child_process');
 
 const logger    = new Logger("Handler");

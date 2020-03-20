@@ -1,6 +1,6 @@
 const fs = require("fs"),
   sqlite3 = require("sqlite3").verbose(),
-  Logger = require("./loghandler.js");
+  Logger = require("./log_handler.js");
 
 var logger = new Logger("Logreader");
 
@@ -10,7 +10,7 @@ db.on("error", function(error) {
   console.log(`[${getWholeDate()}] ! ${error}`);
 });
 
-class logreader {
+class log_reader {
   constructor() {
     logger = new Logger("Logreader");
     logger.info(3, "Setup", "Logreader configured");
@@ -194,4 +194,4 @@ class logreader {
   }
 }
 
-module.exports = logreader;
+module.exports = log_reader;
