@@ -4,10 +4,6 @@
     Benjamin Milne
 */
 
--- DROP DATABASE   IF     EXISTS hutchie_dot_scot_db;
--- CREATE DATABASE IF NOT EXISTS hutchie_dot_scot_db;
--- USE hutchie_dot_scot_db;
-
 CREATE TABLE log_level (
     log_level_id                INTEGER PRIMARY KEY,
     log_level_name              TEXT

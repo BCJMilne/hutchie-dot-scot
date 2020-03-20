@@ -71,7 +71,7 @@ Actions per route can be defined in `routes.json` which allow things such as bro
 - Added SVG graphing demo
 - Added git commit placeholder
 - Added stats page
-- Added logreader.js class for getting stats
+- Added log_reader.js class for getting stats
 - Added various stats options to api
 - Removed `mysql` and `marked` as dependencies
 
