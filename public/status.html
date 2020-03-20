@@ -106,7 +106,7 @@
             var data = JSON.parse(this.responseText);
             console.log(data);
 
-            if(data.status["status"] == "online") {
+            if(data.status["status_status"] == "online") {
 
               document.getElementById("status-td").innerHTML        = "🟢";
               document.getElementById("motd-td").innerHTML          = data.status['status_motd'];
