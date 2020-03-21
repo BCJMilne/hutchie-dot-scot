@@ -109,6 +109,7 @@
             if(data.status["status_status"] == "online") {
 
               // document.getElementById("status-td").innerHTML              = "🟢";
+              document.getElementById("status-td").innerHTML              = "ONLINE";
               document.getElementById("status-td").style.backgroundColor  = "#78b159"
               document.getElementById("motd-td").innerHTML                = data.status['status_motd'];
               document.getElementById("software-td").innerHTML            = data.status['status_software'];
@@ -119,6 +120,7 @@
             } else  {
 
               // document.getElementById("status-td").innerHTML              = "🔴";
+              document.getElementById("status-td").innerHTML              = "OFFLINE";
               document.getElementById("status-td").style.backgroundColor  = "#dd2e44"
               document.getElementById("motd-td").innerHTML                = "...";
               document.getElementById("software-td").innerHTML            = "...";
