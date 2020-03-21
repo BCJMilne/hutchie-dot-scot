@@ -108,20 +108,22 @@
 
             if(data.status["status_status"] == "online") {
 
-              document.getElementById("status-td").innerHTML        = "🟢";
-              document.getElementById("motd-td").innerHTML          = data.status['status_motd'];
-              document.getElementById("software-td").innerHTML      = data.status['status_software'];
-              document.getElementById("brand-td").innerHTML         = data.status['status_brand'];
-              document.getElementById("players-count-td").innerHTML = `${data.status['status_online_players']} / ${data.status['status_max_players']}`;
+              // document.getElementById("status-td").innerHTML              = "🟢";
+              document.getElementById("status-td").style.backgroundColor  = "#78b159"
+              document.getElementById("motd-td").innerHTML                = data.status['status_motd'];
+              document.getElementById("software-td").innerHTML            = data.status['status_software'];
+              document.getElementById("brand-td").innerHTML               = data.status['status_brand'];
+              document.getElementById("players-count-td").innerHTML       = `${data.status['status_online_players']} / ${data.status['status_max_players']}`;
               
 
             } else  {
 
-              document.getElementById("status-td").innerHTML        = "🔴";
-              document.getElementById("motd-td").innerHTML          = "...";
-              document.getElementById("software-td").innerHTML      = "...";
-              document.getElementById("brand-td").innerHTML         = "...";
-              document.getElementById("players-count-td").innerHTML = "...";
+              // document.getElementById("status-td").innerHTML              = "🔴";
+              document.getElementById("status-td").style.backgroundColor  = "#dd2e44"
+              document.getElementById("motd-td").innerHTML                = "...";
+              document.getElementById("software-td").innerHTML            = "...";
+              document.getElementById("brand-td").innerHTML               = "...";
+              document.getElementById("players-count-td").innerHTML       = "...";
 
               playerTable                 = document.getElementById("player-data-table");
               playerTableMobile           = document.getElementById("player-data-table-mobile");
@@ -138,14 +140,18 @@
             var tempHTML        = "<tr><th>Online</th><th>User</th><th>Last 24 hours</th></tr>";
             var tempHTMLMobile  = "<tr><th>Online</th><th>User</th></tr>";
             for(var player in players)    {
-              var isOnline = "🔴";
-              if(checkOnline(data.players, players[player]["player_username"])) isOnline = "🟢";
-
+              var isOnline = false;
+              if(checkOnline(data.players, players[player]["player_username"])) isOnline = true;
               var time = convertTime(players[player]["count"]);
 
-              tempHTML += `<tr><td class="online">${isOnline}</td><td class="name">${players[player]["player_username"]}</td><td class="play-time">${time}</td></tr>`;
+              if(isOnline)  {
+                tempHTML += `<tr><td class="online" style="background-color: #78b159"></td><td class="name">${players[player]["player_username"]}</td><td class="play-time">${time}</td></tr>`;
+                tempHTMLMobile += `<tr><td class="online" style="background-color: #78b159"></td><td class="name">${players[player]["player_username"]}</td></tr>`;
+              } else  {
+                tempHTML += `<tr><td class="online" style="background-color: #dd2e44"></td><td class="name">${players[player]["player_username"]}</td><td class="play-time">${time}</td></tr>`;
+                tempHTMLMobile += `<tr><td class="online" style="background-color: #dd2e44"></td><td class="name">${players[player]["player_username"]}</td></tr>`;
+              }
 
-              tempHTMLMobile += `<tr><td class="online">${isOnline}</td><td class="name">${players[player]["player_username"]}</td></tr>`;
               tempHTMLMobile += `<tr><td class="play-time" colspan="2">${time}</td></tr>`;
             }
             tempHTMLMobile += `<tr><td class="play-time" colspan="2">Total time online for the last 24 hours</td></tr>`;

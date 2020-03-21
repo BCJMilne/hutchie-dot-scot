@@ -274,6 +274,7 @@ p {
     width:              24%;
     text-align:         right;
     border-right:       1px solid black;
+    font-weight:        bold;
 }
 
 .cv-info-table td   {
@@ -312,6 +313,7 @@ p {
     padding:            10px;
     text-align:         center;
     border-bottom:      1px solid black;
+    font-weight:        bold;
 }
 
 .mc-players-table .online, .mc-players-table-mobile .online    {
