@@ -310,7 +310,8 @@ p {
 .mc-players-table th, .mc-players-table-mobile th    {
     vertical-align:     middle;
     font-weight:        normal;
-    padding:            10px;
+    padding-top:        10px;
+    padding-bottom:     10px;
     text-align:         center;
     border-bottom:      1px solid black;
     font-weight:        bold;
@@ -321,7 +322,7 @@ p {
     vertical-align:     middle;
     text-align:         center;
     font-weight:        normal;
-    padding:            10px;
+    /* padding:            10px; */
     border-right:       1px solid black;
 }
 
@@ -331,10 +332,14 @@ p {
 
 .mc-players-table .skin  {
     width:              10%;
-    vertical-align:     middle;
+    display:            block;
     text-align:         center;
     padding:            0;
     overflow:           hidden;
+    width:              60px;
+    height:             60px;
+    margin-left:        auto;
+    margin-right:       auto;
 }
 
 .mc-players-table img  {
@@ -349,11 +354,11 @@ p {
 }
 
 .mc-players-table .name, .mc-players-table-mobile .name  {
-    width:              35%;
+    width:              40%;
     vertical-align:     middle;
     text-align:         center;
     font-weight:        normal;
-    padding:            10px;
+    /* padding:            10px; */
 }
 
 .mc-players-table-mobile .name  {
@@ -362,11 +367,11 @@ p {
 }
 
 .mc-players-table .play-time, .mc-players-table-mobile .play-time {
-    width:              45%;
+    width:              40%;
     vertical-align:     middle;
     text-align:         center;
     font-weight:        normal;
-    padding:            10px;
+    /* padding:            10px; */
 }
 
 .mc-players-table-mobile .play-time {
