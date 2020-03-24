@@ -1,182 +1,214 @@
 <!DOCTYPE html>
 
 <html lang="en">
+  <head>
+    {{wide/head.html}}
 
-<head>
-  
-  {{wide/head.html}}
-  
-  <title>
-    Hutchie | Stats
-  </title>
-  
-</head>
+    <title>
+      Hutchie | Stats
+    </title>
+  </head>
 
-<body>
-  
-  <header>
-    
-    {{wide/nav.html}}
-    
-  </header>
-  
-  <main>
-    
-    <section class="coloured-body">
-      
-      <span class="sec-header">
-        <a name="serverstatus" href="#serverstatus">#</a>
-        <b>Server Status</b>
-      </span>
+  <body>
+    <header>
+      {{wide/nav.html}}
+    </header>
 
-      <p>
-        Below you'll find the current status of the whitelisted <span class="code"><a href="/ext-rd?url=https://minecraft.net">mc.hutchie.scot</a></span> Minecraft Server.
-      </p>
-      
-    </section>
+    <main>
+      <section class="coloured-body">
+        <span class="sec-header">
+          <a name="serverstatus" href="#serverstatus">#</a>
+          <b>Server Status</b>
+        </span>
 
-    {{wide/js-alert.html}}
+        <p>
+          Below you'll find the current status of the whitelisted
+          <span class="code">mc.hutchie.scot</span>
+          <a href="/ext-rd?url=https://minecraft.net">Minecraft Server.</a>
+        </p>
+      </section>
 
-    <section>
-      
-      <span class="sec-header">
-        <a name="server" href="#server">#</a>
-        <b>Server</b>
-      </span>
-      
-      <table class="cv-info-table">
-        <tr><th>Status</th>       <td id="status-td">         Loading... </td></tr>
-        <tr><th>MOTD</th>         <td id="motd-td">           Loading... </td></tr>
-        <tr><th>Version</th>      <td id="software-td">       Loading... </td></tr>
-        <tr><th>Brand</th>        <td id="brand-td">          Loading... </td></tr>
-        <tr><th>Players</th>      <td id="players-count-td">  Loading... </td></tr>
-      </table>
-      
-    </section>
+      {{wide/js-alert.html}}
 
-    <div class="inner-hline"></div>
+      <section>
+        <span class="sec-header">
+          <a name="server" href="#server">#</a>
+          <b>Server</b>
+        </span>
 
-    <section>
-      
-      <span class="sec-header">
-        <a name="current" href="#current">#</a>
-        <b>Players</b>
-      </span>
+        <table class="cv-info-table">
+          <tr>
+            <th>Status</th>
+            <td id="status-td">Loading...</td>
+          </tr>
+          <tr>
+            <th>MOTD</th>
+            <td id="motd-td">Loading...</td>
+          </tr>
+          <tr>
+            <th>Version</th>
+            <td id="software-td">Loading...</td>
+          </tr>
+          <tr>
+            <th>Brand</th>
+            <td id="brand-td">Loading...</td>
+          </tr>
+          <tr>
+            <th>Players</th>
+            <td id="players-count-td">Loading...</td>
+          </tr>
+        </table>
+      </section>
 
-      <table class="mc-players-table" id="player-data-table">
-        <tr><th>[ Player name... ]</th><td> Loading... </td></tr>
-      </table>
+      <div class="inner-hline"></div>
 
-      <table class="mc-players-table-mobile" id="player-data-table-mobile">
-        <tr><th>[ Player name... ]</th><td> Loading... </td></tr>
-      </table>
-      
-    </section>
-    
-  </main>
-  
-  <footer>
-    
-    <script>
+      <section>
+        <span class="sec-header">
+          <a name="current" href="#current">#</a>
+          <b>Players</b>
+        </span>
 
-      function checkOnline(players, username) {
-        for(var player in players)  {
-          if(players[player]["player_username"] == username) return true;
-        }
-        return false;
-      }
+        <table class="mc-players-table" id="player-data-table">
+          <tr>
+            <th>[ Player name... ]</th>
+            <td>Loading...</td>
+          </tr>
+        </table>
 
-      function convertTime(units) {
+        <table class="mc-players-table-mobile" id="player-data-table-mobile">
+          <tr>
+            <th>[ Player name... ]</th>
+            <td>Loading...</td>
+          </tr>
+        </table>
+      </section>
+    </main>
 
-        // Minutes
-        var minutesTotal = units * 5;
-        var minutes = minutesTotal % 60;
-
-        // Hours
-        var hours = Math.floor( minutesTotal / 60 );
-        // console.log(`Total minutes: ${minutesTotal}, total hours: ${hours}, minutes: ${minutes}`);
-
-        return `${hours}h and ${minutes}m`;
-      }
-
-      function getData()  {
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            var data = JSON.parse(this.responseText);
-            console.log(data);
-
-            if(data.status["status_status"] == "online") {
-
-              // document.getElementById("status-td").innerHTML              = "🟢";
-              document.getElementById("status-td").innerHTML              = "ONLINE";
-              document.getElementById("status-td").style.backgroundColor  = "#78b159"
-              document.getElementById("motd-td").innerHTML                = data.status['status_motd'];
-              document.getElementById("software-td").innerHTML            = data.status['status_software'];
-              document.getElementById("brand-td").innerHTML               = data.status['status_brand'];
-              document.getElementById("players-count-td").innerHTML       = `${data.status['status_online_players']} / ${data.status['status_max_players']}`;
-              
-
-            } else  {
-
-              // document.getElementById("status-td").innerHTML              = "🔴";
-              document.getElementById("status-td").innerHTML              = "OFFLINE";
-              document.getElementById("status-td").style.backgroundColor  = "#dd2e44"
-              document.getElementById("motd-td").innerHTML                = "...";
-              document.getElementById("software-td").innerHTML            = "...";
-              document.getElementById("brand-td").innerHTML               = "...";
-              document.getElementById("players-count-td").innerHTML       = "...";
-
-              playerTable                 = document.getElementById("player-data-table");
-              playerTableMobile           = document.getElementById("player-data-table-mobile");
-
-            }
-
-            playerTable                 = document.getElementById("player-data-table");
-            playerTableMobile           = document.getElementById("player-data-table-mobile");
-            playerTable.innerHTML       = "";
-            playerTableMobile.innerHTML = "";
-
-            players = data.recent_players;
-            
-            var tempHTML        = "<tr><th>Online</th><th>User</th><th>Last 24 hours</th></tr>";
-            var tempHTMLMobile  = "<tr><th>Online</th><th>User</th></tr>";
-            for(var player in players)    {
-              var isOnline = false;
-              if(checkOnline(data.players, players[player]["player_username"])) isOnline = true;
-              var time = convertTime(players[player]["count"]);
-
-              if(isOnline)  {
-                tempHTML += `<tr><td class="online" style="background-color: #78b159"></td><td class="name">${players[player]["player_username"]}</td><td class="play-time">${time}</td></tr>`;
-                tempHTMLMobile += `<tr><td class="online" style="background-color: #78b159"></td><td class="name">${players[player]["player_username"]}</td></tr>`;
-              } else  {
-                tempHTML += `<tr><td class="online" style="background-color: #dd2e44"></td><td class="name">${players[player]["player_username"]}</td><td class="play-time">${time}</td></tr>`;
-                tempHTMLMobile += `<tr><td class="online" style="background-color: #dd2e44"></td><td class="name">${players[player]["player_username"]}</td></tr>`;
-              }
-
-              tempHTMLMobile += `<tr><td class="play-time" colspan="2">${time}</td></tr>`;
-            }
-            tempHTMLMobile += `<tr><td class="play-time" colspan="2">Total time online for the last 24 hours</td></tr>`;
-            playerTable.innerHTML       += tempHTML;
-            playerTableMobile.innerHTML += tempHTMLMobile;
-
+    <footer>
+      <script>
+        function checkOnline(players, username) {
+          for (var player in players) {
+            if (players[player]["player_username"] == username) return true;
           }
+          return false;
         }
-        xhttp.open("GET", "https://api.hutchie.scot/mc-users", true);
-        xhttp.send();
-      }
 
-      document.addEventListener('DOMContentLoaded', function () {
-        getData();
-      }, false);
-      
-    </script>
-    
-    {{wide/footer.html}}
-    
-  </footer>
-  
-</body>
+        function convertTime(units) {
+          // Minutes
+          var minutesTotal = units * 5;
+          var minutes = minutesTotal % 60;
 
+          // Hours
+          var hours = Math.floor(minutesTotal / 60);
+          // console.log(`Total minutes: ${minutesTotal}, total hours: ${hours}, minutes: ${minutes}`);
+
+          return `${hours}h and ${minutes}m`;
+        }
+
+        function procData(data) {
+          if (data.status["status_status"] == "online") {
+            // document.getElementById("status-td").innerHTML              = "🟢";
+            document.getElementById("status-td").innerHTML = "ONLINE";
+            document.getElementById("status-td").style.backgroundColor =
+              "#78b159";
+            document.getElementById("motd-td").innerHTML =
+              data.status["status_motd"];
+            document.getElementById("software-td").innerHTML =
+              data.status["status_software"];
+            document.getElementById("brand-td").innerHTML =
+              data.status["status_brand"];
+            document.getElementById(
+              "players-count-td"
+            ).innerHTML = `${data.status["status_online_players"]} / ${data.status["status_max_players"]}`;
+          } else {
+            // document.getElementById("status-td").innerHTML              = "🔴";
+            document.getElementById("status-td").innerHTML = "OFFLINE";
+            document.getElementById("status-td").style.backgroundColor =
+              "#dd2e44";
+            document.getElementById("motd-td").innerHTML = "...";
+            document.getElementById("software-td").innerHTML = "...";
+            document.getElementById("brand-td").innerHTML = "...";
+            document.getElementById("players-count-td").innerHTML = "...";
+
+            playerTable = document.getElementById("player-data-table");
+            playerTableMobile = document.getElementById(
+              "player-data-table-mobile"
+            );
+          }
+
+          playerTable = document.getElementById("player-data-table");
+          playerTableMobile = document.getElementById(
+            "player-data-table-mobile"
+          );
+          playerTable.innerHTML = "";
+          playerTableMobile.innerHTML = "";
+
+          players = data.recent_players;
+
+          var tempHTML =
+            "<tr><th>Online</th><th></th><th>User</th><th>Last 24 hours</th></tr>";
+          var tempHTMLMobile = "<tr><th>Online</th><th>User</th></tr>";
+          for (var player in players) {
+            // For dev purposes only
+            // players[player]["player_skin"] =
+            //   "b'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'";
+            var skin = "<td><img/></td>";
+
+            if(players[player]["player_skin"])  {
+              players[player]["player_skin"] = players[player]["player_skin"];
+              console.log(players[player]["player_skin"]);
+              skin = `data:image/png;base64,${players[player]["player_skin"]}`;
+              skin = `<td class="skin"><img src=${skin.substring(0, skin.length - 1)}/>`
+            }
+
+            var isOnline = false;
+            if (checkOnline(data.players, players[player]["player_username"]))
+              isOnline = true;
+            var time = convertTime(players[player]["count"]);
+
+            if (isOnline) {
+              tempHTML += `<tr><td class="online" style="background-color: #78b159"></td>${skin}<td class="name">${players[player]["player_username"]}</td><td class="play-time">${time}</td></tr>`;
+              tempHTMLMobile += `<tr><td class="online" style="background-color: #78b159"></td><td class="name">${players[player]["player_username"]}</td></tr>`;
+            } else {
+              tempHTML += `<tr><td class="online" style="background-color: #dd2e44"></td>${skin}<td class="name">${players[player]["player_username"]}</td><td class="play-time">${time}</td></tr>`;
+              tempHTMLMobile += `<tr><td class="online" style="background-color: #dd2e44"></td><td class="name">${players[player]["player_username"]}</td></tr>`;
+            }
+
+            tempHTMLMobile += `<tr><td class="play-time" colspan="2">${time}</td></tr>`;
+          }
+          tempHTMLMobile += `<tr><td class="play-time" colspan="2">Total time online for the last 24 hours</td></tr>`;
+          playerTable.innerHTML += tempHTML;
+          playerTableMobile.innerHTML += tempHTMLMobile;
+        }
+
+        function getData() {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              var data = JSON.parse(this.responseText);
+              console.log(data);
+              procData(data);
+            }
+          };
+          xhttp.open("GET", "https://api.hutchie.scot/mc-users", true);
+          xhttp.send();
+        }
+
+        // Dev purposes only
+        // var dev_data = `{"status":{"status_id":1313,"status_timestamp":1585057203,"status_status":"online","status_motd":"Hutchie's Minecraft Server uwu","status_software":"1.15.2","status_brand":"CraftBukkit on Bukkit 1.15.2-R0.1-SNAPSHOT","status_max_players":20,"status_online_players":0},"players":[],"recent_players":[{"player_username":"Megsym8","player_skin":null,"count":64},{"player_username":"HutchieVukasin","player_skin":"b'iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAJhklEQVR42tVYW0xW2RXeXkHQQnFqTWtrZ7wAolwUHBCZahRHFJVBtOoMAj\/3+x3E6dxsJ20fJjMxzaRpjInpQzVqTTTG+yVG+6APfWoa25f2zRg1KiLecHV966z1c2CIPyhOp3+y\/rXPPvvss75vrb322scRkXuRZGSU09KltQSdmJhPaWnbaeHCLbR4cRFLCT148EDk3r17NHv2bJG7d+\/SnTt3RELNP4qy82WeCzkgNfUDBl8mYN9+O0BJSfmsSygl5Re0ZEllkACAvn\/\/voAGGejr7u7+Nglwr4WAtLRCBl9Mixa9z57fKiSkpGymzMwqjowaAQng0ABtBNy6dUtI+b8nAOEOSUoqYI9X6DIo0ijYTDdv3hQBeIAGGdAgAnq0Da5mk0vF7G+JgKSkjQIWEYDlsHDhNokI5AREwx++\/lrk1KlTAhiyZ88e6fvTvn2vbOj63NwBc5T6CNiwbh29dgKSkzdL6ANwcvIm0SADbURCa2srHTp0iL784gv6fNcuAf773bvpwoUL1NbW9soGIqlu2bTpG\/OszcmRhPvaCUC2h6cTEnJl3eMahGA5pKYWUmNjI3V0dAgRR48elUhAu729fdQIGBwFkPy8vKEI+GjUCUhP90J9+fJmXvNbKCurnsGXU3p6mRDR0tJCXV1dQoSBRt\/OnTups7Pzu58Es7LqguENLwMk1n18\/BrO8nUMNEBz5ixn0FU0f\/56EeQEywHZ2TuECI+QLdKPyJg3bx1LruQNLCNLoJgffenppVJTDBXWJiOJEpOC\/PwRke6wlSUm5rFhWxnoCvZwDYPcIPt+RkaFhDwM\/4qDZe\/evfQr1pcvX6Yu1sePH6dO1ljvn7I+f\/48fcD64MGD1MJ6\/\/79Mu7kyZPUprqC9bFjx4LvGGwQEtvLEjDUUglJADwaF7datrnY2FUs2dzexAbmSd\/cuSupgY0+cuQIfcL62rVr9Bnr69evUwnrAwcOULmCalFdyPr06dNUwPrixYtCAkhp1f5aJS0u7l15R3x8jkQE2tDWRuTExeWEBFVZXk5FhYUjBo\/3u6amJtqxY4esVyQzXGMtm+De8+fPaeOyMTIGCQ7tJ0+eSBvPYBxyAK7teeQBS5DWxj2bA\/JdyBHODIKhAGttGIuiBgXO06dPaezYscHy1nn7cLDyM0B4DknQ5kQiNFKMZIiRBP0\/JwDegcBwGAWDUcqijIVYiYu21f2DBSRAA6QBhcacIAW7hBEDUtA20oZrKJwxYcIEGjdunFSeo0YADLTwhGF2kEFFNxiov8\/aIMhf+2MOAAZQ8zTeYUvFosuiZbiGDn7vqBFgnkIUoKIzT4NxiNX58LL\/uGsG2TIx4q5cuRKMJCPAloTlArwTeiQ5AMBBNmQ0j9mymB89eiTy8OFD7okfJG6A9Pb2Ul9fXxA8kiFyBH6PHz+mSh5jyQ5nAmR752aTW+08\/Y35B8rgX09Pj8z\/7NkzeTe22QALdhrsJuYMc4A9AxsxflgEwHAM9gh4iyVO9SIaM2YMTZo0icaPHy861K+ep0R42+EIERQEL3pkBAz+fcTzY7ttYsG7dvO5wy9D\/F5MAEIK4BFWYNq5uSwLlYQEio6OFs9jF5g2bVqQLIxF1NjzYBw\/RMDVq1eDOQFR8jIRAC\/aToMf5sHvlzx\/DQtqjy9Z7Pht+WHEBOBFCK\/gaAbtXCJLLEs0TZkyhSIiImjixImi8UKAx3OIGICHoFYAGSiaLJdYcnyVCMC8t2\/fFoB4T60S0MHyyRAR4HeQkvhiAibGRxHErXMUtuD7FJYQRVOnTqU++g\/FxjjvXq4TsXbwmVzvbA6vt7PAOzslV8yRKOqjf1NP73Uf+GQJ23oF8D7GbnUyFmBQTjdreH\/IUqfXGLtGnwP4XToG96q0HyV2l+aFCu1rH8aHE\/5l4UjkAXK5OB3QlPUzaPLkyfTw0T\/5OrUfMAPzdP8zCEV4HbX+DjWqocHJUup9\/C+61\/33IHhoI6BTDXUuiY+c0O\/IPGUKEkmuWtd7h4IuVLK3aX+DzlOvS6JWo6JBJTA8Ajby\/3sK7B2WfIrInEYxMTHU3fMPvl7pIyDVR8BaCk+JkZd26Mt+x\/JbARXDMo2OnfgjHT+9h9sz+KjnLYOAGlylINx76M+UaCrm6xKfF0u1Xe1LesX6XK2S3qb9Br5eSdquOiQBYfHRFLlyurcEEqJpUsYPyC11FL74DYqKihpyCWBc2IJoeaZCvdCqxsNLH3\/sefbMxX1ePlniXTepp8xjxepxt0qXzRrvXqF6sEzHdGm7Ut9hXi71EVOkpHaqDqhNw4iA1fz\/c4pIZ+AuXQz5XsFM8bxzywYtgVTxuhcBSyk8OSa4FhEFv1bjnPuxyKW\/\/plcDq751JXtGf+pz2PtCg4edsucR1aeB6xZxzUr6CIdX6vgQVKjbwl0ac4o0XaJ2hSSgAkzJ1PkiukUxsAmxkZJBERkvuEBfXeIJJjpKHL5dC9SVnnr1cK0VhNhSQnAzCe3WT3L4BobvWhp9CWoZvVUufNyhryHdwJbAs2aD8q03ebLDdv02XadL6DRUqfSqTokAfZN32p6\/+dtCPqgb9y4MaD8xRjca1DGO5XxQgOzVklYAf0myzzxoiVBW+sdCsIjYRG5LCdjbb4mHVujEtAIqFSA1b6IatIxVUp0+XAIAHBUa1a02AEHgI0EFEl2OrQTop0TitRAsP8bXXcIY0mo2ardD7k69ICW+kiwkK7TdsC20JXQSwZsZy0aBdUWZTr+M9+26l8GNndIAiwpWUbt0ombdL1+6NtSytQQy7yfa3+jPlcTzOqpuvZn0dW\/\/cW75qgo9oFvUjA1PmNhuPccF0UF0ClalSZqhfojX9E0TyvLNNWztI93HDddK9m5oQmAMWfOnKF8\/bxVod\/uGvXzFsAePnxYthV884PB+Pxdp5+5nMvo3+cl7NM0ApLE63V13iEqMjKSwsPDg4cqO1+gjZrDNM773jJYQG4jk93mLSVvnpl8kvSWSCDgBGRlpbe9lpd7Nnj34\/U69HdFd+LECQnbs2fPShV37tw5CbFLly5JpQYyyvQD6HYFX63Xsm4L+oucfp0gAOvrrSgaWlBa44xhxIAkkALtNjj1eKxGwAz19M80pySq\/qn2J+hYRMpPtBqdNZxt0DMmLCxMDMHLYTy+vuAkaPfhGfTDaHgKhmNMh4a0Z4QnmANl8JtRTgRtAeUbU+9bDq0+XavLrFXXNep75CVof1K2PuQkv7a23Q9FwH8B0y4FxYh71qkAAAAASUVORK5CYII='","count":82},{"player_username":"Fuaff","player_skin":null,"count":94},{"player_username":"Farfigneuton","player_skin":null,"count":150},{"player_username":"PinkCuppyCake","player_skin":null,"count":72}]}`;
+        // dev_data = JSON.parse(dev_data);
+        // procData(dev_data);
+
+        document.addEventListener(
+          "DOMContentLoaded",
+          function() {
+            getData();
+          },
+          false
+        );
+      </script>
+
+      {{wide/footer.html}}
+    </footer>
+  </body>
 </html>
-

@@ -308,7 +308,7 @@ p {
 }
 
 .mc-players-table th, .mc-players-table-mobile th    {
-    vertical-align:     top;
+    vertical-align:     middle;
     font-weight:        normal;
     padding:            10px;
     text-align:         center;
@@ -318,7 +318,7 @@ p {
 
 .mc-players-table .online, .mc-players-table-mobile .online    {
     width:              10%;
-    vertical-align:     top;
+    vertical-align:     middle;
     text-align:         center;
     font-weight:        normal;
     padding:            10px;
@@ -329,9 +329,28 @@ p {
     border-bottom:      1px solid black;
 }
 
+.mc-players-table .skin  {
+    width:              10%;
+    vertical-align:     middle;
+    text-align:         center;
+    padding:            0;
+    overflow:           hidden;
+}
+
+.mc-players-table img  {
+    width:              100%;
+    image-rendering: optimizeSpeed;             /*                     */
+    image-rendering: -moz-crisp-edges;          /* Firefox             */
+    image-rendering: -o-crisp-edges;            /* Opera               */
+    image-rendering: -webkit-optimize-contrast; /* Chrome (and Safari) */
+    image-rendering: pixelated;                 /* Chrome as of 2019   */
+    image-rendering: optimize-contrast;         /* CSS3 Proposed       */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE8+                */
+}
+
 .mc-players-table .name, .mc-players-table-mobile .name  {
-    width:              45%;
-    vertical-align:     top;
+    width:              35%;
+    vertical-align:     middle;
     text-align:         center;
     font-weight:        normal;
     padding:            10px;
@@ -344,7 +363,7 @@ p {
 
 .mc-players-table .play-time, .mc-players-table-mobile .play-time {
     width:              45%;
-    vertical-align:     top;
+    vertical-align:     middle;
     text-align:         center;
     font-weight:        normal;
     padding:            10px;
