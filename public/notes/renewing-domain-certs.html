@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  {{wide/head.html}}
+  
+  <title>
+    Hutchie | Home
+  </title>
+  
+</head>
+
+<body>
+  
+  <header>
+    
+    {{wide/nav.html}}
+    
+  </header>
+  
+  <main>
+
+    <section class="coloured-body">
+      
+      <span class="sec-header">
+        <a name="this-page" href="#this-page">#</a>
+        <b>Renewing Let's Encrypt Wildcard Domain Certifications</b>
+      </span>
+      
+    </section>
+
+    <section class="sec-date">
+      2020-05-01
+    </section>
+
+    <section>
+    
+      <p>
+        Before using Cloudflare's own SSL certifications, I started by using 
+        <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt</a>.
+        They're a fantastic organisation providing what every website should have
+        access to: secure encryption.
+      </p>
+          
+      <p>
+        <br>
+        Their certbot application allows you to create free, auto-renewing certificates
+        for as many [sub]domains as you'd like - as one combined certificate or individual ones.
+        But I have a habit of creating and removing subdomains on a whim, so when it became available,
+        I started using a wildcard domain certificate. These allow you to have one certificate for all 
+        of your subdomains. However...
+        <br><br>
+        They require a unique token placed in a TXT DNS record for authentication before issuing, which 
+        makes renewal tricky.
+        <br><br>
+        Depending on whether your registrar / CDN provides you with some form of API access, there are tools
+        you can use to automate this process. I'm a bit of a brainlet, so at the moment, I do it manually.
+      </p>
+
+    </section>
+
+    <div class="inner-hline"></div>
+
+    <section>
+
+      <p>
+        Below is the script I run every few months to issue a 90-day certificate for *.hutchie.scot:
+      </p>
+      
+      <section class="sec-code">
+        #!/bin/bash<br>
+        <br><br>
+        # NOTE:<br>
+        # 1. Run as sudo<br>
+        # 2. This script is interactive and requires a DNS edit<br>
+        certbot certonly --manual \<br>
+          --manual-public-ip-logging-ok \<br>
+          --preferred-challenges=dns \<br>
+          --email [ my email address ] \<br>
+          --server https://acme-v02.api.letsencrypt.org/directory \<br>
+          --agree-tos -d *.hutchie.scot
+      </section>
+
+      <p>
+        When run, certbot will attempt to fetch a new certificate and issue a token to be placed in your DNS 
+        records. This must be placed in a TXT field labelled <span class="code">_acme-challenge</span>. You 
+        usually have to wait a small amount of time for these to propagate, but eventually you'll be able to 
+        progress and your cert will be issued ( by default, this is saved to <span class="code">/etc/letsencrypt/live/</span> ).
+      </p>
+
+    </section>
+
+  </main>
+  
+<footer>
+  
+  {{wide/footer.html}}
+  
+</footer>
+
+</body>
+
+</html>
+

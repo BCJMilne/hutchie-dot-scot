@@ -37,6 +37,7 @@ body    {
     margin-right:       auto;
     margin-top:         0;
     margin-bottom:      0;
+    background-color:   white;
 }
 
 main    {
@@ -97,6 +98,12 @@ nav {
     padding:            7px;
 }
 
+.nav-wrapper h1 a span {
+    color:              white;
+    text-decoration:    none;
+    font-size:          22px;
+}
+
 nav a   {
     color:              white;
     flex-grow:          1;
@@ -131,26 +138,59 @@ footer    {
     font-size:          0.9em;
     padding-left:       7%;
     padding-right:      7%;
+    padding-bottom:     20px;
+    padding-top:        20px;
     display:            flex;
     justify-content:    center;
-    align-items:        flex-start;
+    align-items:        center;
     align-content:      center;
-    flex-direction:     row;
+    flex-direction:     column;
     background-color:   rgb(213, 231, 255);
 }
 
 .footer-item  {
     flex-grow:          1;
-    text-align:         left;
-    margin:             40px;
-    /* margin-left:        10px; */
-    padding-left:       10px;
+    text-align:         center;
+    margin:             5px;
     color:              #585858;
-    border-left:        2px solid #585858;
+    line-height:        20px;
 }
 
-.footer-item a  {
+.footer-item a, .footer-item span  {
     color:              #585858;
+}
+
+#index-page-desc-cont   {
+    display:            flex;
+    flex-direction:     row;
+}
+
+#index-page-desc    {
+    width:              75%;
+}
+
+#index-page-img     {
+    width:              25%;
+    margin-left:        auto;
+    margin-right:       auto;
+}
+
+@media screen and (max-width: 900px)    {
+    #index-page-desc-cont   {
+        flex-direction:     column;
+    }
+    
+    #index-page-desc    {
+        width:              100%;
+    }
+    
+    #index-page-img     {
+        margin-top:         40px;
+        width:              initial;
+        height:             150px;
+        /* margin-left:        auto;
+        margin-right:       auto; */
+    }
 }
 
 section   {
@@ -159,6 +199,32 @@ section   {
     padding-left:       7%;
     padding-right:      7%;
     line-height:        1.6;
+}
+
+.sec-date  {
+    padding-top:        15px;
+    padding-bottom:     15px;
+    line-height:        1;
+    text-align:         right;
+    background-color:   #EBEBEB;
+}
+
+.sec-code  {
+    width:              100%;
+    padding-top:        20px;
+    padding-bottom:     20px;
+    margin-top:         30px;
+    margin-bottom:      30px;
+    padding-left:       3%;
+    padding-right:      3%;
+    /* font-size:          15px; */
+    resize:             none;
+    font-family:        'Courier New', Courier, monospace;
+    background-color:   #EBEBEB;
+    border:             none;
+    border-left:        2px solid black;
+    overflow-x:         scroll;
+    white-space:        nowrap;
 }
 
 p {
@@ -379,6 +445,13 @@ p {
     border-bottom:      1px solid black;
 }
 
+.mc-server-map-iframe   {
+    width:              100%;
+    height:             400px;
+    border:             none;
+    padding-top:        20px;
+}
+
 .sec-alert  {
     outline:            2px solid red;
     background-color:   rgb(255, 195, 195);
@@ -491,6 +564,10 @@ p {
     .footer-item  {
         margin:             10px;
         text-align:         left;
+    }
+
+    .footer-session {
+        color:              inherit;
     }
 
     .qr-input-cont   {
