@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  {{wide/head.html}}
+  
+  <title>
+    Hutchie | Home
+  </title>
+  
+</head>
+
+<body>
+  
+  <header>
+    
+    {{wide/nav.html}}
+    
+  </header>
+  
+  <main>
+
+    <section class="coloured-body">
+      
+      <span class="sec-header">
+        <a name="this-page" href="#this-page">#</a>
+        <b>Example options-ssl-apache.conf File</b>
+      </span>
+      
+    </section>
+
+    <section class="sec-date">
+      2020-05-01
+    </section>
+
+    <section>
+    
+      <p>
+        When using <a href="https://letsencrypt.org/" target="_blank">Let's Encrypt's</a> certbot on Fedora 30 to 
+        issue certificates for httpd, certbot (at the moment, anyway)
+        is unable to automatically configure httpd for usage with the SSL certificates. While you can still
+        issue certs manually you will have to configure httpd yourself, for example like so: 
+      </p>
+
+      <section class="sec-code">
+        &lt;VirtualHost *:443><br>
+          ServerName something.example.com<br>
+          serverAlias something.example.com<br>
+          DocumentRoot "/var/www/somethingdir"<br>
+          <br><br>
+          Include /etc/letsencrypt/options-ssl-apache.conf<br>
+          SSLCertificateFile /etc/letsencrypt/live/[ cert name ]/fullchain.pem<br>
+          SSLCertificateKeyFile /etc/letsencrypt/live/[ cert name ]/privkey.pem<br>
+        &lt;/VirtualHost>
+      </section>
+
+      <p>
+        See <span class="code">options-ssl-apache.conf</span>? That file did not, in my case, get generated,
+        so I took the file from another machine running an up to date, default installation of Apache and using Let's Encrypt.
+        <br><br>
+        Note that this file works as of <b>2020-05-01. I cannot guarantee it is valid or secure.</b>
+      </p>
+
+      <section class="sec-code">
+        # This file contains important security parameters. If you modify this file<br>
+        # manually, Certbot will be unable to automatically provide future security<br>
+        # updates. Instead, Certbot will print and log an error message with a path to<br>
+        # the up-to-date file that you will need to refer to when manually updating<br>
+        # this file.<br>
+        <br>
+        SSLEngine on<br>
+        <br>
+        # Intermediate configuration, tweak to your needs<br>
+        SSLProtocol             all -SSLv2 -SSLv3<br>
+        SSLCipherSuite          ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS<br>
+        SSLHonorCipherOrder     on<br>
+        SSLCompression          off<br>
+        <br>
+        SSLOptions +StrictRequire<br>
+        <br>
+        # Add vhost name to log entries:<br>
+        LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" vhost_combined<br>
+        LogFormat "%v %h %l %u %t \"%r\" %>s %b" vhost_common<br>
+        <br>
+        #CustomLog /var/log/apache2/access.log vhost_combined<br>
+        #LogLevel warn<br>
+        #ErrorLog /var/log/apache2/error.log<br>
+        <br>
+        # Always ensure Cookies have "Secure" set (JAH 2012/1)<br>
+        #Header edit Set-Cookie (?i)^(.*)(;\s*secure)??((\s*;)?(.*)) "$1; Secure$3$4"<br>
+      </section>
+
+    </section>
+
+  </main>
+  
+<footer>
+  
+  {{wide/footer.html}}
+  
+</footer>
+
+</body>
+
+</html>
+

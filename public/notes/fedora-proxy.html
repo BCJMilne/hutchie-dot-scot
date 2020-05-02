@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  
+  {{wide/head.html}}
+  
+  <title>
+    Hutchie | Home
+  </title>
+  
+</head>
+
+<body>
+  
+  <header>
+    
+    {{wide/nav.html}}
+    
+  </header>
+  
+  <main>
+
+    <section class="coloured-body">
+      
+      <span class="sec-header">
+        <a name="this-page" href="#this-page">#</a>
+        <b>Getting Apache / httpd Reverse Proxy to work on Fedora 30</b>
+      </span>
+      
+    </section>
+
+    <section class="sec-date">
+      2020-05-01
+    </section>
+
+    <section>
+    
+      <p>
+        By default SELinux, in all its eternal wisdom, blocks internal loopbacks.
+        In turn this does not allow httpd / Apache to ProxyPass to another application.
+      </p>
+
+      <p>
+        <br>
+        Thankfully it's a one-liner in the console to enable (you'll likely need sudo privileges):
+      </p>
+      
+      <section class="sec-code">
+        /usr/bin/setsebool -P httpd_can_network connect 1
+      </section>
+
+    </section>
+
+  </main>
+  
+<footer>
+  
+  {{wide/footer.html}}
+  
+</footer>
+
+</body>
+
+</html>
+

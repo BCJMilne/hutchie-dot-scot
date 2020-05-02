@@ -44,23 +44,6 @@ Actions per route can be defined in `routes.json` which allow things such as bro
     - `url-redirect`: Redirect the user to a given page
     - `internal-redirect`: Transparently serve another (relative) URL
 
-### CLI
-
-- Use `--port=[port]` to set the port (default is whatever is in `constants.js`, and then `3344` if undeclared)
-- Use `--logging-level=[log_level_no]` to control the level of console output. The default option is `1`. Possible options are:  
-    - `1`: lowest level info  
-    - `2`: http requests  
-    - `3`: important info  
-    - `4`: warnings  
-    - `5`: errors  
-    - `6`: critical errors  
-
-## Dependencies
-
-- ~~NodeJS modules:~~
-    - ~~`mysql`~~ 
-    - ~~`marked`~~
-
 ## Changelog
 
 #### **Version 1.8** _2019 / 12 / 25_ -- We're back

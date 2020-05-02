@@ -1,13 +1,20 @@
 <div class="footer-item">
-    <a href="/ext-rd?url=/stats">Page statistics</a><br>
-    <a href="/ext-rd?url=/status">Server status</a><br>
-    Version <a href="/ext-rd?url=https://github.com/BCJMilne/hutchie-dot-scot">{{$githash}}</a>
-</div>
-
-<div class="footer-item">
+    <a href="/ext-rd?url=/stats">Page statistics</a> |
+    <a href="/ext-rd?url=/status">Server status</a> | 
     Twitter: 
     <a href="/ext-rd?url=https://twitter.com/HutchieVukasin" target="_blank">
         <!-- <img src="/content/Twitter_Logo_Blue.png"/ style="height: 24px; padding-right: 5px;">  -->
         @HutchieVukasin
-    </a><br>
+    </a> 
 </div>
+
+<div class="footer-item">
+    To me, all you are is <span class="footer-session" id="footer-session"></span> | 
+    Version <a href="/ext-rd?url=https://github.com/BCJMilne/hutchie-dot-scot" target="_blank">{{$githash}}</a>
+</div>
+
+<script>
+    var el = document.getElementById("footer-session");
+    el.innerHTML = getSessionHeader();
+    el.title = getCookie("session");
+</script>
