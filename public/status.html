@@ -28,6 +28,8 @@
 
       {{wide/js-alert.html}}
 
+      <!--
+
       <section>
         <span class="sec-header">
           <a name="server-map" href="#server-map"></a>
@@ -44,6 +46,8 @@
       </section>
 
       <div class="inner-hline"></div>
+
+      -->
 
       <section>
         <span class="sec-header">
@@ -72,6 +76,10 @@
             <th>Players</th>
             <td id="players-count-td">Loading...</td>
           </tr>
+	  <tr>
+	    <th>Timestamp</th>
+	    <td id="status-timestamp">Loading...</td>
+	  </tr>
         </table>
       </section>
 
@@ -135,7 +143,8 @@
             document.getElementById(
               "players-count-td"
             ).innerHTML = `${data.status["status_online_players"]} / ${data.status["status_max_players"]}`;
-          } else {
+            document.getElementById("status-timestamp").innerHTML = data.status["status_timestamp"];  
+	} else {
             // document.getElementById("status-td").innerHTML              = "🔴";
             document.getElementById("status-td").innerHTML = "OFFLINE";
             document.getElementById("status-td").style.backgroundColor =
@@ -144,6 +153,7 @@
             document.getElementById("software-td").innerHTML = "...";
             document.getElementById("brand-td").innerHTML = "...";
             document.getElementById("players-count-td").innerHTML = "...";
+	    document.getElementById("status-timestamp").innerHTML = "...";
 
             playerTable = document.getElementById("player-data-table");
             playerTableMobile = document.getElementById(
