@@ -9,7 +9,7 @@
 }
 
 html    {
-    min-height:     110%;
+    min-height:     110vh;
     -webkit-font-smoothing: antialiased;
     color:          var(--col-text);
     text-shadow:    1px 1px #000000;
@@ -21,6 +21,8 @@ html    {
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+
+    /* overflow: hidden; */
 }
 
 *   {
@@ -48,6 +50,10 @@ body    {
     margin-right:       auto;
     margin-top:         0;
     margin-bottom:      0;
+
+    min-height:                 100vh;
+    overflow:                   auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 
@@ -220,6 +226,10 @@ footer    {
 
     #nav-spacer {
         display:        none;
+    }
+
+    .coloured-body  {
+        padding-top: 10px;
     }
 }
 
