@@ -119,20 +119,16 @@
         height:             70vh;
         width:              100%;
     }
-
     .graph-container    {
         width:              100%;
     }
-
     .graph-options-container    {
         height:             20%;
     }
-
     .path-output-container  {
         width:              15%;
         height:             100%;
     }
-
     .graph-details-container    {
         color:              white;
         width:              25%;

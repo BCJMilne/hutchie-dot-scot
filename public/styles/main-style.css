@@ -1,6 +1,6 @@
 :root   {
     --col-bg:           white;
-    --col-text:         black;
+    --col-text:         white;
 }
 
 @font-face {
@@ -9,10 +9,18 @@
 }
 
 html    {
+    min-height:     100%;
     -webkit-font-smoothing: antialiased;
     color:          var(--col-text);
+    text-shadow:    1px 1px #000000;
     padding:        0;
     margin:         0;
+
+    background: url(/content/20160816201908_02_edited_darker.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 *   {
@@ -40,8 +48,8 @@ body    {
     margin-right:       auto;
     margin-top:         0;
     margin-bottom:      0;
-    background-color:   white;
 }
+
 
 main    {
     padding:            0;
@@ -50,7 +58,7 @@ main    {
     margin-left:        auto;
     margin-right:       auto;
     margin-top:         0;
-    background-color:   #f1f1f1;
+    /* background-color:   #f1f1f1; */
 }
 
 a   {
@@ -58,22 +66,22 @@ a   {
 }
 
 header  {
-    background-color:   black;
+    /* background-color:   white; */
 }
 
 .nav-wrapper    {
     width:              100%;
-    max-width:          900px;
+    max-width:          1300px;
     margin-left:        auto;
     margin-right:       auto;
     display:            flex;
-    justify-content:    flex-start;
-    align-items:        flex-end;
-    align-content:      flex-start;
+    justify-content:    space-between;
+    align-items:        center;
+    align-content:      center;
     flex-direction:     row;
     color:              white;
     padding:            30px;
-    padding-top:        23px;
+    padding-top:        40px;
     /* padding-top:        30px; */
     /* padding-bottom:     30px; */
 }
@@ -90,13 +98,14 @@ nav {
     align-content:      center;
     flex-direction:     row;
     flex-wrap:          wrap;
-    margin-left:        20px;
+    /* flex-grow:          1; */
 }
 
 .nav-wrapper h1  {
     margin-bottom:      0;
     margin-top:         5px;
     padding:            0;
+    /* flex-grow:          1; */
 }
 
 .nav-wrapper h1 a  {
@@ -114,15 +123,13 @@ nav {
 
 nav a   {
     color:              white;
-    flex-grow:          1;
+    font-weight:        bolder;
     padding:            20px;
+    text-decoration:    none;
     /* padding-left:       20px; */
     /* padding-right:      20px; */
 }
 
-nav a:focus   {
-    flex-grow:          1;
-}
 
 .sec-header  {
     display:            inline-block;
@@ -139,7 +146,7 @@ nav a:focus   {
 .inner-hline   {
     height:             3px;
     width:              90%;
-    background-color:   black;
+    background-color:   white;
     margin-left:        5%;
 }
 
@@ -159,19 +166,19 @@ footer    {
     align-items:        center;
     align-content:      center;
     flex-direction:     column;
-    background-color:   rgb(213, 231, 255);
+    /* background-color:   rgb(213, 231, 255); */
 }
 
 .footer-item  {
     flex-grow:          1;
     text-align:         center;
     margin:             5px;
-    color:              #585858;
+    color:              #adadad;
     line-height:        20px;
 }
 
 .footer-item a, .footer-item span  {
-    color:              #585858;
+    color:              #adadad;
 }
 
 #index-page-desc-cont   {
@@ -245,7 +252,7 @@ li  {
     padding-bottom:     15px;
     line-height:        1;
     text-align:         right;
-    background-color:   #EBEBEB;
+    /* background-color:   #EBEBEB; */
 }
 
 .sec-code  {
@@ -259,9 +266,9 @@ li  {
     /* font-size:          15px; */
     resize:             none;
     font-family:        'Courier New', Courier, monospace;
-    background-color:   #EBEBEB;
+    /* background-color:   #EBEBEB; */
     border:             none;
-    border-left:        2px solid black;
+    border-left:        2px solid white;
     overflow-x:         scroll;
     white-space:        nowrap;
 }
@@ -273,8 +280,8 @@ p {
 
 .coloured-body  {
     /* background-color:   rgb(255, 143, 143); */
-    background-color:   rgb(255, 188, 188);
-    color:              black;
+    /* background-color:   rgb(255, 188, 188); */
+    color:              white;
 }
 
 .coloured-body a, .coloured-body b  {
@@ -288,9 +295,9 @@ p {
 
 .coloured-body .cv-contact-info-element:hover,
 .coloured-body .cv-contact-info-element:focus  {
-    -webkit-box-shadow: -5px 5px 0px 0px rgb(47, 154, 255);
-    -moz-box-shadow:    -5px 5px 0px 0px rgb(47, 154, 255);
-    box-shadow:         -5px 5px 0px 0px rgb(47, 154, 255);
+    -webkit-box-shadow: 5px 5px 0px 0px rgb(47, 154, 255);
+    -moz-box-shadow:    5px 5px 0px 0px rgb(47, 154, 255);
+    box-shadow:         5px 5px 0px 0px rgb(47, 154, 255);
 }
 
 .wide-image-cont   {
@@ -331,18 +338,18 @@ p {
     width:              35%;
     margin:             20px;
     /* padding:            20px; */
-    outline:            2px solid black;
+    outline:            2px solid white;
     text-align:         center;
-    -webkit-box-shadow: -5px 5px 0px 0px rgba(0,0,0,1);
-    -moz-box-shadow:    -5px 5px 0px 0px rgba(0,0,0,1);
-    box-shadow:         -5px 5px 0px 0px rgba(0,0,0,1);
+    -webkit-box-shadow: 5px 5px 0px 0px rgba(0,0,0,1);
+    -moz-box-shadow:    5px 5px 0px 0px rgba(0,0,0,1);
+    box-shadow:         5px 5px 0px 0px rgba(0,0,0,1);
 }
 
 .cv-contact-info-element:hover,
 .cv-contact-info-element:focus  {
-    -webkit-box-shadow: -5px 5px 0px 0px rgba(255, 182, 47, 1);
-    -moz-box-shadow:    -5px 5px 0px 0px rgba(255, 182, 47, 1);
-    box-shadow:         -5px 5px 0px 0px rgba(255, 182, 47, 1);
+    -webkit-box-shadow: 5px 5px 0px 0px rgba(255, 182, 47, 1);
+    -moz-box-shadow:    5px 5px 0px 0px rgba(255, 182, 47, 1);
+    box-shadow:         5px 5px 0px 0px rgba(255, 182, 47, 1);
 }
 
 .cv-contact-info-link {
@@ -355,11 +362,11 @@ p {
     height:             100%;
     padding:            20px;
     text-decoration:    none;
-    color:              black;
+    color:              white;
 }
 
 .cv-contact-info-element span  {
-    color:              black;
+    color:              white;
 }
 
 .cv-info-table  {
@@ -368,8 +375,8 @@ p {
     width:              90%;
     margin-left:        5%;
     font-size:          16px;
-    border:             1px solid black;
-    border-top:         25px solid black;
+    border:             1px solid white;
+    border-top:         25px solid white;
 }
 
 .cv-info-table th   {
@@ -378,7 +385,7 @@ p {
     padding:            10px;
     width:              24%;
     text-align:         right;
-    border-right:       1px solid black;
+    border-right:       1px solid white;
     font-weight:        bold;
 }
 
@@ -394,8 +401,8 @@ p {
     width:              90%;
     margin-left:        5%;
     font-size:          16px;
-    border:             1px solid black;
-    border-top:         25px solid black;
+    border:             1px solid white;
+    border-top:         25px solid white;
 }
 
 .mc-players-table-mobile    {
@@ -418,7 +425,7 @@ p {
     padding-top:        10px;
     padding-bottom:     10px;
     text-align:         center;
-    border-bottom:      1px solid black;
+    border-bottom:      1px solid white;
     font-weight:        bold;
 }
 
@@ -428,11 +435,11 @@ p {
     text-align:         center;
     font-weight:        normal;
     /* padding:            10px; */
-    border-right:       1px solid black;
+    border-right:       1px solid white;
 }
 
 .mc-players-table-mobile .online    {
-    border-bottom:      1px solid black;
+    border-bottom:      1px solid white;
 }
 
 .mc-players-table .skin  {
@@ -468,7 +475,7 @@ p {
 
 .mc-players-table-mobile .name  {
     width:              90%;
-    border-bottom:      1px solid black;
+    border-bottom:      1px solid white;
 }
 
 .mc-players-table .play-time, .mc-players-table-mobile .play-time {
@@ -481,7 +488,7 @@ p {
 
 .mc-players-table-mobile .play-time {
     width:              100%;
-    border-bottom:      1px solid black;
+    border-bottom:      1px solid white;
 }
 
 .mc-server-map-iframe   {
@@ -493,7 +500,7 @@ p {
 
 .sec-alert  {
     outline:            2px solid red;
-    background-color:   rgb(255, 195, 195);
+    /* background-color:   rgb(255, 195, 195); */
     padding:            20px;
 }
 
@@ -640,3 +647,4 @@ p {
         text-align:         left;
     }
 }
+
