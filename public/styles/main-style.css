@@ -9,7 +9,7 @@
 }
 
 html    {
-    min-height:     110vh;
+    min-height:     110%;
     -webkit-font-smoothing: antialiased;
     color:          var(--col-text);
     text-shadow:    1px 1px #000000;
